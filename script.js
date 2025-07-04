@@ -6,65 +6,69 @@ document.addEventListener('DOMContentLoaded', () => {
   const message = document.getElementById("message");
 
   const audio = document.getElementById("bgMusic");
-  audio.volume = 0.7;
-
   const playAudio = document.getElementById("playAudio");
   const volumeControl = document.getElementById("volumeControl");
-
   const mobileWarning = document.getElementById("mobileWarning");
   const introText = document.getElementById("introText");
 
   // Sonido de error
   const errorSound = new Audio("assets/sfx/error.mp3");
 
+  // Función para actualizar el estilo dinámico del volumen
+  const updateVolumeStyle = (value) => {
+    const percent = value * 100;
+    const color1 = value < 0.34 ? "#f00" : value < 0.67 ? "#ff0" : "#0f0";
+    volumeControl.style.background = `linear-gradient(90deg, ${color1} ${percent}%, #111 ${percent}%)`;
+  };
+
   // Detectar si es celular
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   if (isMobile) {
-    // Mostrar advertencia para móvil
     if (mobileWarning) mobileWarning.style.display = "block";
     if (introText) introText.style.display = "none";
-  } else {
-    // PLAY / PAUSE
+    return;
+  }
+
+  // Configurar audio solo para desktop
+  if (audio) {
+    audio.volume = parseFloat(volumeControl.value);
+    updateVolumeStyle(audio.volume);
+  }
+
+  // Botón de reproducir/pausar música
+  if (playAudio) {
     playAudio.addEventListener("click", () => {
       if (audio.paused) {
         audio.play();
         playAudio.textContent = "⏸️";
+        playAudio.title = "Pausar música";
       } else {
         audio.pause();
-        playAudio.textContent = "🔊";
+        playAudio.textContent = "▶️";
+        playAudio.title = "Reproducir música";
       }
     });
+  }
 
-    // CONTROL DE VOLUMEN
-    const updateVolumeStyle = (value) => {
-      let color = "#0f0"; // verde por defecto
-      if (value < 0.34) color = "#f00"; // rojo
-      else if (value < 0.67) color = "#ff0"; // amarillo
-
-      volumeControl.style.background = `linear-gradient(90deg, ${color} ${value * 100}%, #333 ${value * 100}%)`;
-    };
-
-    // Estilo inicial de la barra
-    updateVolumeStyle(audio.volume);
-
+  // Barra de volumen dinámica
+  if (volumeControl) {
     volumeControl.addEventListener("input", () => {
-      const value = parseFloat(volumeControl.value);
-      audio.volume = value;
-      updateVolumeStyle(value);
+      const val = parseFloat(volumeControl.value);
+      audio.volume = val;
+      updateVolumeStyle(val);
     });
+  }
 
-    // LOGIN
-    if (loginBtn) {
-      loginBtn.addEventListener("click", () => {
-        if (password.value === "1234") {
-          message.textContent = "¡Bienvenido, ##$%324@38!";
-          loginBtn.style.transform = "translate(0,0)";
-        } else {
-          message.textContent = "Contraseña incorrecta. 🤖";
-          errorSound.play();
-        }
-      });
-    }
+  // Validación simple del login
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      if (password.value === "1234") {
+        message.textContent = "¡Bienvenido, ##$%324@38!";
+      } else {
+        message.textContent = "Contraseña incorrecta. 🤖";
+        errorSound.play();
+      }
+    });
   }
 });
