@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const introText = document.getElementById("introText");
   const levelContainer = document.getElementById("levelContainer");
   
-  // Sonido de error para login
+  // Sonido de error para login (asegúrate que exista este archivo)
   const errorSound = new Audio("assets/sfx/error.mp3");
 
   // Detectar si es celular
@@ -57,26 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Función para configurar login en niveles cargados dinámicamente
-  function setupLogin() {
-    const loginBtn = document.getElementById("loginBtn");
-    const password = document.getElementById("password");
-    const message = document.getElementById("message");
-    if (loginBtn && password && message) {
-      loginBtn.addEventListener("click", () => {
-        if (password.value === "1234") {
-          message.textContent = "¡Bienvenido, ##$%324@38!";
-        } else {
-          message.textContent = "Contraseña incorrecta. 🤖";
-          errorSound.play();
-        }
-      });
-    }
-  }
-
-  // Función para cargar un nivel dentro del div levelContainer
-  function loadLevel(url) {
-    fetch(url)
+  // Función para cargar un nivel dentro del div levelContainer, con script externo
+  function loadLevel(htmlUrl, scriptUrl) {
+    fetch(htmlUrl)
       .then(response => {
         if (!response.ok) throw new Error("Error al cargar nivel");
         return response.text();
@@ -85,7 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
         introText.style.display = "none";
         levelContainer.style.display = "block";
         levelContainer.innerHTML = html;
-        setupLogin();
+
+        // Cargar el script externo del nivel
+        if (scriptUrl) {
+          // Eliminar script previo si existe
+          const prevScript = document.getElementById('levelScript');
+          if (prevScript) prevScript.remove();
+
+          const script = document.createElement('script');
+          script.src = scriptUrl;
+          script.id = 'levelScript';
+          document.body.appendChild(script);
+        }
       })
       .catch(err => {
         alert(err.message);
@@ -95,11 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Botón play que carga el nivel 1 dinámicamente
+  // Botón play que carga el nivel 1 dinámicamente (contenido y script)
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
     playBtn.addEventListener("click", () => {
-      loadLevel("level1.html");
+      loadLevel("level1-content.html", "level1.js");
     });
   }
 
