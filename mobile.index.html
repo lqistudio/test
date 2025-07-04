@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Olvidé mi Contraseña - Móvil</title>
   <style>
-    /* Estilos para ocupar toda la pantalla con la imagen */
     body, html {
       margin: 0; padding: 0;
       height: 100%;
@@ -13,23 +12,24 @@
       overflow: hidden;
       background: black;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       font-family: 'Oxanium', sans-serif;
       color: white;
       text-align: center;
       user-select: none;
+      padding: 20px;
     }
     img {
-      max-width: 100vw;
-      max-height: 100vh;
+      max-width: 80vw;
+      max-height: 50vh;
       object-fit: contain;
+      margin-bottom: 20px;
     }
     .message {
-      position: absolute;
-      bottom: 30px;
-      width: 100%;
       font-size: 18px;
+      line-height: 1.4;
       text-shadow: 0 0 8px #ff00ff, 0 0 15px #00ffff;
     }
   </style>
@@ -37,7 +37,7 @@
 <body>
   <img src="assets/images/brake_cel.png" alt="No disponible en móvil" />
   <div class="message">
-    <p>Este juego no está disponible en dispositivos móviles.</p>
+    <p>🚫 Este juego no está disponible en dispositivos móviles.</p>
     <p>Por favor, usa un equipo de escritorio para jugar.</p>
   </div>
 </body>
