@@ -1,21 +1,17 @@
-const loginBtn = document.getElementById("loginBtn");
-const username = document.getElementById("username");
-const password = document.getElementById("password");
-const message = document.getElementById("message");
 
-loginBtn.addEventListener("mouseover", () => {
-  if (password.value === "" || password.value !== "1234") {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 200 - 100;
-    loginBtn.style.transform = `translate(${x}px, ${y}px)`;
-  }
-});
+// Simula pantalla de carga e intro
+window.onload = () => {
+  const loading = document.getElementById("loading");
+  const intro = document.getElementById("introText");
+  setTimeout(() => {
+    loading.style.display = "none";
+    intro.classList.remove("hidden");
+  }, 2500);
 
-loginBtn.addEventListener("click", () => {
-  if (password.value === "1234") {
-    message.textContent = "¡Bienvenido, hacker!";
-    loginBtn.style.transform = "translate(0,0)";
-  } else {
-    message.textContent = "Contraseña incorrecta. 🤖";
+  const playBtn = document.getElementById("playBtn");
+  if (playBtn) {
+    playBtn.onclick = () => {
+      window.location.href = "level1.html";
+    };
   }
-});
+};
