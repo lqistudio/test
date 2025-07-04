@@ -3,7 +3,7 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const message = document.getElementById("message");
 
-const errorSound = new Audio("Mechstrom.mp3"); // nombre correcto
+const errorSound = new Audio("Mechstorm.mp3"); // nombre correcto
 errorSound.volume = 0.7; // ajusta el volumen como prefieras
 
 loginBtn.addEventListener("mouseover", () => {
