@@ -45,7 +45,19 @@ body {
   z-index: 50;
 }
 
-/* Contenedor principal del menú */
+/* Imagen solo para móviles */
+#mobileWarning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 99999;
+}
+
+/* Contenido principal del menú */
 .intro {
   position: relative;
   z-index: 9999;
@@ -53,7 +65,7 @@ body {
   padding: 20px;
 }
 
-/* Texto de instrucciones o título */
+/* Texto principal */
 .instructions {
   font-size: 28px;
   font-weight: 700;
@@ -62,7 +74,20 @@ body {
   line-height: 1.4;
 }
 
-/* Botón Play */
+/* Margen entre texto y botones */
+.text-container {
+  margin-bottom: 200px;
+}
+
+/* Contenedor de botones */
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Botón JUGAR */
 button#playBtn {
   position: relative;
   font-size: 24px;
@@ -108,31 +133,32 @@ button#playBtn:hover::after {
   animation: glitchText 0.3s steps(2, end) infinite;
 }
 
-/* Botón sonido */
-button#soundBtn {
-  background: none;
-  border: none;
-  color: #eee;
-  font-size: 28px;
-  cursor: pointer;
-  margin-top: 30px;
-  user-select: none;
-  transition: color 0.3s ease;
+@keyframes glitchText {
+  0% { transform: translate(0px, 0px); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0px, 0px); }
 }
 
-button#soundBtn:hover {
-  color: #0f0;
-}
-
-/* Control de volumen */
+/* Controles de audio */
 .audio-controls {
   display: flex;
   justify-content: center;
   gap: 10px;
   align-items: center;
-  margin-top: 20px;
 }
 
+.audio-controls button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #eee;
+  cursor: pointer;
+}
+
+/* 🎧 Barra de volumen estilo hacker */
 .audio-controls input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -183,17 +209,7 @@ button#soundBtn:hover {
   background: #fff;
 }
 
-/* Animaciones */
-
-@keyframes glitchText {
-  0% { transform: translate(0px, 0px); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(2px, -2px); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(1px, -1px); }
-  100% { transform: translate(0px, 0px); }
-}
-
+/* Animación del fondo */
 @keyframes gradientAnimation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
