@@ -6,7 +6,6 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Ocultar por defecto la imagen móvil */
     #mobileWarning {
       display: none;
       position: fixed;
@@ -19,16 +18,10 @@
   </style>
 </head>
 <body>
-  <!-- Fondo gradiente -->
   <div id="backgroundGradient"></div>
-
-  <!-- Imagen fija wall.png -->
   <div id="backgroundImage"></div>
-
-  <!-- Imagen de advertencia para móviles -->
   <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
 
-  <!-- Contenido principal -->
   <div class="intro" id="introText">
     <div class="text-container">
       <h2 class="instructions">
@@ -41,7 +34,6 @@
 
     <div class="buttons-container">
       <button id="playBtn">🎮 PLAY</button>
-
       <div class="audio-controls">
         <button id="playAudio" title="Activar música">🔊</button>
         <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
@@ -55,7 +47,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Detectar móvil y mostrar advertencia
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       const warningImage = document.getElementById("mobileWarning");
       const introText = document.getElementById("introText");
@@ -63,18 +54,17 @@
       if (isMobile) {
         if (warningImage) warningImage.style.display = "block";
         if (introText) introText.style.display = "none";
-        return; // No continuar con el juego en móvil
+        return;
       }
 
-      // Botón PLAY: guarda permiso y redirige a nivel 1
       const playBtn = document.getElementById('playBtn');
-      playBtn.addEventListener('click', () => {
-        sessionStorage.setItem('canPlayLevel1', 'true');
-        window.location.href = 'level1.html';
-      });
+      if (playBtn) {
+        playBtn.addEventListener('click', () => {
+          sessionStorage.setItem('canPlayLevel1', 'true');
+          window.location.href = 'level1.html';
+        });
+      }
     });
   </script>
-
-  <script src="script.js"></script>
 </body>
 </html>
