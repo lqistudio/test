@@ -54,8 +54,8 @@
   </audio>
 
   <script>
-    // Detectar si es móvil y mostrar imagen advertencia, ocultar contenido principal
     document.addEventListener('DOMContentLoaded', () => {
+      // Detectar móvil y mostrar advertencia
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       const warningImage = document.getElementById("mobileWarning");
       const introText = document.getElementById("introText");
@@ -63,7 +63,15 @@
       if (isMobile) {
         if (warningImage) warningImage.style.display = "block";
         if (introText) introText.style.display = "none";
+        return; // No continuar con el juego en móvil
       }
+
+      // Botón PLAY: guarda permiso y redirige a nivel 1
+      const playBtn = document.getElementById('playBtn');
+      playBtn.addEventListener('click', () => {
+        sessionStorage.setItem('canPlayLevel1', 'true');
+        window.location.href = 'level1.html';
+      });
     });
   </script>
 
