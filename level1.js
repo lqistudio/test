@@ -1,51 +1,117 @@
-function initLevel1() {
-  const loginBtn = document.getElementById("loginBtn");
-  const username = document.getElementById("username");
-  const password = document.getElementById("password");
-  const message = document.getElementById("message");
+document.addEventListener('DOMContentLoaded', () => {
+  // Elementos comunes
+  const audio = document.getElementById("bgMusic");
+  const playAudio = document.getElementById("playAudio");
+  const volumeControl = document.getElementById("volumeControl");
+  const mobileWarning = document.getElementById("mobileWarning");
+  const introText = document.getElementById("introText");
+  const levelContainer = document.getElementById("levelContainer");
 
-  let accessGranted = false;
+  // Sonido de error para login (asegúrate que exista este archivo)
+  const errorSound = new Audio("assets/sfx/error.mp3");
 
-  loginBtn.addEventListener("mouseover", () => {
-    if (accessGranted) return;
+  // Detectar si es celular
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    if (mobileWarning) mobileWarning.style.display = "block";
+    if (introText) introText.style.display = "none";
+    return;
+  }
 
-    if (password.value === "" || password.value !== "1234") {
-      const maxMove = 120;
-      const x = Math.random() * maxMove * 2 - maxMove;
-      const y = Math.random() * maxMove * 2 - maxMove;
-
-      loginBtn.style.transition = "transform 0.15s ease";
-      loginBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-      message.textContent = "⚠️ Intento no autorizado...";
-      message.style.color = "#ff0055";
-      message.style.textShadow = "0 0 8px #ff0055";
-
-      message.animate(
-        [
-          { opacity: 1 },
-          { opacity: 0.3 },
-          { opacity: 1 }
-        ],
-        { duration: 300, iterations: 2 }
-      );
+  // Función para actualizar el estilo dinámico del volumen
+  function updateVolumeStyle(value) {
+    const percent = value * 100;
+    const color1 = value < 0.34 ? "#f00" : value < 0.67 ? "#ff0" : "#0f0";
+    if(volumeControl) {
+      volumeControl.style.background = `linear-gradient(90deg, ${color1} ${percent}%, #111 ${percent}%)`;
     }
-  });
+  }
 
-  loginBtn.addEventListener("click", () => {
-    if (password.value === "1234") {
-      accessGranted = true;
-      message.textContent = `✅ Bienvenido, ${username.value || "hacker"}.`;
-      message.style.color = "#00ffcc";
-      message.style.textShadow = "0 0 8px #00ffcc";
-      loginBtn.style.transform = "translate(0, 0)";
-    } else {
-      message.textContent = "❌ Contraseña incorrecta.";
-      message.style.color = "#ff66c4";
-      message.style.textShadow = "0 0 6px #ff66c4";
+  // Configurar audio y volumen
+  if (audio && volumeControl) {
+    audio.volume = parseFloat(volumeControl.value);
+    updateVolumeStyle(audio.volume);
+  }
 
-      loginBtn.style.transition = "transform 0.2s ease";
-      loginBtn.style.transform = "translate(0, 0)";
-    }
-  });
-}
+  // Botón de reproducir/pausar música
+  if (playAudio && audio) {
+    playAudio.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playAudio.textContent = "⏸️";
+        playAudio.title = "Pausar música";
+      } else {
+        audio.pause();
+        playAudio.textContent = "▶️";
+        playAudio.title = "Reproducir música";
+      }
+    });
+  }
+
+  // Control dinámico del volumen
+  if (volumeControl && audio) {
+    volumeControl.addEventListener("input", () => {
+      const val = parseFloat(volumeControl.value);
+      audio.volume = val;
+      updateVolumeStyle(val);
+    });
+  }
+
+  // Función para cargar un nivel dentro del div levelContainer, con script externo
+  function loadLevel(htmlUrl, scriptUrl) {
+    fetch(htmlUrl)
+      .then(response => {
+        if (!response.ok) throw new Error("Error al cargar nivel");
+        return response.text();
+      })
+      .then(html => {
+        introText.style.display = "none";
+        levelContainer.style.display = "block";
+        levelContainer.classList.add("level1"); // Aplica la clase level1 para CSS
+        levelContainer.innerHTML = html;
+
+        // Cargar el script externo del nivel
+        if (scriptUrl) {
+          // Eliminar script previo si existe
+          const prevScript = document.getElementById('levelScript');
+          if (prevScript) prevScript.remove();
+
+          const script = document.createElement('script');
+          script.src = scriptUrl;
+          script.id = 'levelScript';
+          script.onload = () => {
+            // Ejecutar la función que inicializa el nivel 1
+            if (typeof initLevel1 === "function") {
+              initLevel1();
+            }
+          };
+          document.body.appendChild(script);
+        } else {
+          // Si no hay script externo, igual intentamos llamar la función
+          if (typeof initLevel1 === "function") {
+            initLevel1();
+          }
+        }
+      })
+      .catch(err => {
+        alert(err.message);
+        introText.style.display = "block";
+        levelContainer.style.display = "none";
+        levelContainer.innerHTML = "";
+        levelContainer.classList.remove("level1");
+      });
+  }
+
+  // Botón play que carga el nivel 1 dinámicamente (contenido y script)
+  const playBtn = document.getElementById("playBtn");
+  if (playBtn) {
+    playBtn.addEventListener("click", () => {
+      loadLevel("level1-content.html", "level1.js");
+    });
+  }
+
+  // Protecciones para evitar copiar, menú derecho, selección y arrastrar
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
+});
