@@ -1,21 +1,59 @@
-/* ... (tu CSS existente) ... */
+@font-face {
+  font-family: 'Oxanium';
+  src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-.audio-controls {
-  margin-top: 15px;
+body {
+  font-family: 'Oxanium', sans-serif;
+  background: url('assets/images/wall.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
-.audio-controls button {
-  font-size: 20px;
-  background: none;
+.container {
+  text-align: center;
+  background: rgba(28, 28, 28, 0.85);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #4e00ff66;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+  font-size: 16px;
+  border-radius: 8px;
   border: none;
-  color: #eee;
-  cursor: pointer;
-  margin-right: 10px;
 }
 
-.audio-controls input[type="range"] {
-  width: 150px;
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #4e00ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
 }
+
+button:hover {
+  background: #6f00ff;
+}
+
+#message {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* 🎧 Estilos p*
