@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="menu.css" />
   <style>
     #mobileWarning {
       display: none;
@@ -17,65 +18,7 @@
       background-color: #000;
     }
 
-    .intro {
-      position: relative;
-      z-index: 8888;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .instructions {
-      font-size: 28px;
-      font-weight: 700;
-      text-shadow: 0 0 10px #ff00ff, 0 0 15px #00ffff;
-      margin-bottom: 30px;
-      line-height: 1.4;
-    }
-
-    .buttons-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-
-    button#playBtn {
-      font-size: 24px;
-      padding: 15px 30px;
-      background-color: #4e00ff;
-      border: none;
-      border-radius: 10px;
-      color: white;
-      cursor: pointer;
-      font-family: 'Oxanium', sans-serif;
-      box-shadow: 0 0 10px #af00ff;
-      transition: background-color 0.3s ease;
-    }
-
-    button#playBtn:hover {
-      background-color: #6f00ff;
-    }
-
-    .audio-controls {
-      margin-top: 15px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .audio-controls button {
-      font-size: 24px;
-      background: none;
-      border: none;
-      color: #eee;
-      cursor: pointer;
-    }
-
-    .audio-controls input[type="range"] {
-      width: 150px;
-      cursor: pointer;
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -84,6 +27,7 @@
 
   <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
 
+  <!-- Menú inicial -->
   <div class="intro" id="introText">
     <div class="text-container">
       <h2 class="instructions">
@@ -104,6 +48,9 @@
     </div>
   </div>
 
+  <!-- Contenedor dinámico para niveles -->
+  <div id="levelContainer"></div>
+
   <audio id="bgMusic" loop preload="auto" src="Mechstorm.mp3"></audio>
 
   <script>
@@ -113,8 +60,8 @@
       const introText = document.getElementById("introText");
 
       if (isMobile) {
-        if (warningImage) warningImage.style.display = "block";
-        if (introText) introText.style.display = "none";
+        warningImage.style.display = "block";
+        introText.style.display = "none";
         return;
       }
 
@@ -138,9 +85,40 @@
       });
 
       const playBtn = document.getElementById('playBtn');
-      playBtn.addEventListener('click', () => {
-        sessionStorage.setItem('canPlayLevel1', 'true');
-        window.location.href = 'level1.html';
+      const levelContainer = document.getElementById('levelContainer');
+
+      playBtn.addEventListener('click', async () => {
+        introText.classList.add('hidden');
+        try {
+          const response = await fetch('level1.html');
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const levelMain = doc.querySelector('main') || doc.body;
+
+          // Cargar solo el contenido principal
+          levelContainer.innerHTML = '';
+          levelContainer.appendChild(levelMain);
+
+          // Cargar también el script del nivel
+          const script = doc.querySelector('script');
+          if (script) {
+            const newScript = document.createElement('script');
+            newScript.textContent = script.textContent;
+            levelContainer.appendChild(newScript);
+          }
+
+          // Si el nivel usa un CSS independiente
+          const levelCSS = doc.querySelectorAll('link[rel="stylesheet"]');
+          levelCSS.forEach(link => {
+            if (!document.querySelector(`link[href="${link.href}"]`)) {
+              document.head.appendChild(link.cloneNode());
+            }
+          });
+
+        } catch (error) {
+          console.error('Error al cargar el nivel:', error);
+        }
       });
     });
 
