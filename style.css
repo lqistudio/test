@@ -11,8 +11,20 @@
 
 body {
   font-family: 'Oxanium', sans-serif;
-  background: url('assets/images/wall.png') no-repeat center center fixed;
+
+  /* Fondo con dos capas: gradiente animado + imagen */
+  background: 
+    linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+  background-size: 600% 600%;
+  animation: gradientAnimation 15s ease infinite;
+
+  /* Capa de la imagen */
+  background-image: url('assets/images/wall.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
+
   color: white;
   display: flex;
   justify-content: center;
@@ -20,6 +32,12 @@ body {
   height: 100vh;
   margin: 0;
   overflow: hidden;
+}
+
+@keyframes gradientAnimation {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
 .container {
@@ -37,6 +55,18 @@ h1 {
   font-size: 28px;
   color: #fff;
   text-shadow: 0 0 5px #4e00ff99;
+}
+
+/* Estilo para las instrucciones como título */
+.instructions {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+  margin-bottom: 30px;
+  max-width: 600px;
+  text-align: center;
+  line-height: 1.4;
 }
 
 input {
@@ -82,9 +112,10 @@ button:hover {
   font-size: 14px;
   color: #ff66c4;
   text-shadow: 0 0 3px #000;
+  transition: all 0.2s ease;
 }
 
-/* 🎧 Estilos para controles de audio o futuros hacks */
+/* 🎧 Estilos para controles de audio */
 .audio-controls {
   margin-top: 15px;
   display: flex;
