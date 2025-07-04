@@ -10,122 +10,89 @@
 }
 
 body {
+  margin: 0;
+  height: 100vh;
   font-family: 'Oxanium', sans-serif;
-
-  /* Fondo con dos capas: gradiente animado + imagen */
-  background: 
-    linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
-  background-size: 600% 600%;
-  animation: gradientAnimation 15s ease infinite;
-
-  /* Capa de la imagen */
+  
+  /* Imagen fija, centrada y expandida */
   background-image: url('assets/images/wall.png');
-  background-repeat: no-repeat;
   background-position: center center;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
 
-  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
   overflow: hidden;
+  color: white;
+  position: relative;
+  z-index: 10;
 }
 
+/* Fondo degradado animado detrás */
+#backgroundGradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+  background-size: 600% 600%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+/* Animación que mueve el gradiente de lado a lado */
 @keyframes gradientAnimation {
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.container {
+/* El contenedor con el texto debe estar sobre todo */
+.intro {
+  position: relative;
+  z-index: 20;
   text-align: center;
-  background: rgba(28, 28, 28, 0.85);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px #4e00ff66;
-  width: 90%;
-  max-width: 400px;
-}
-
-h1 {
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #fff;
-  text-shadow: 0 0 5px #4e00ff99;
-}
-
-/* Estilo para las instrucciones como título */
-.instructions {
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
-  margin-bottom: 30px;
   max-width: 600px;
-  text-align: center;
+  padding: 20px;
+}
+
+.instructions {
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 0 10px #ff00ff, 0 0 15px #00ffff;
+  margin-bottom: 30px;
   line-height: 1.4;
 }
 
-input {
-  display: block;
-  margin: 10px auto;
-  padding: 10px;
-  width: 100%;
-  font-size: 16px;
-  border-radius: 8px;
+/* Botón y controles (ajusta si quieres) */
+button#playBtn {
+  font-size: 24px;
+  padding: 15px 30px;
+  background-color: #4e00ff;
   border: none;
-  background: #111;
-  color: #fff;
-  box-shadow: 0 0 5px #4e00ff55 inset;
-  transition: background 0.3s ease;
-}
-
-input:focus {
-  outline: none;
-  background: #222;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background: #4e00ff;
+  border-radius: 10px;
   color: white;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background: #6f00ff;
-  box-shadow: 0 0 10px #6f00ffaa;
+button#playBtn:hover {
+  background-color: #6f00ff;
 }
 
-#message {
-  margin-top: 15px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #ff66c4;
-  text-shadow: 0 0 3px #000;
-  transition: all 0.2s ease;
-}
-
-/* 🎧 Estilos para controles de audio */
 .audio-controls {
   margin-top: 15px;
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 10px;
+  align-items: center;
 }
 
 .audio-controls button {
-  font-size: 20px;
+  font-size: 24px;
   background: none;
   border: none;
   color: #eee;
