@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Ocultar por defecto la imagen móvil */
+    #mobileWarning {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 99999;
+    }
+  </style>
 </head>
 <body>
   <!-- Fondo gradiente -->
@@ -42,15 +54,19 @@
   </audio>
 
   <script>
-    // Mostrar imagen de advertencia si es móvil
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
+    // Detectar si es móvil y mostrar imagen advertencia, ocultar contenido principal
+    document.addEventListener('DOMContentLoaded', () => {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       const warningImage = document.getElementById("mobileWarning");
-      if (warningImage) {
-        warningImage.style.display = "block";
+      const introText = document.getElementById("introText");
+
+      if (isMobile) {
+        if (warningImage) warningImage.style.display = "block";
+        if (introText) introText.style.display = "none";
       }
-    }
+    });
   </script>
+
   <script src="script.js"></script>
 </body>
 </html>
