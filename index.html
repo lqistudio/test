@@ -6,6 +6,7 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* Estilo para la imagen de advertencia en móvil */
     #mobileWarning {
       display: none;
       position: fixed;
@@ -14,7 +15,9 @@
       height: 100vh;
       object-fit: cover;
       z-index: 99999;
+      background-color: #000; /* fondo negro para evitar transparencias */
     }
+    /* Controles de audio */
     .audio-controls {
       margin-top: 15px;
       display: flex;
@@ -31,20 +34,23 @@
     }
     .audio-controls input[type="range"] {
       width: 150px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div id="backgroundGradient"></div>
   <div id="backgroundImage"></div>
+
+  <!-- Imagen para usuarios móviles -->
   <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
 
   <div class="intro" id="introText">
     <div class="text-container">
       <h2 class="instructions">
-        El mundo digital colapsó...<br>
-        La única forma de restaurarlo: recuperar tu acceso.<br><br>
-        Bienvenido a <strong>“Olvidé mi Contraseña”</strong>,<br>
+        El mundo digital colapsó...<br />
+        La única forma de restaurarlo: recuperar tu acceso.<br /><br />
+        Bienvenido a <strong>“Olvidé mi Contraseña”</strong>,<br />
         un experimento de
       </h2>
     </div>
@@ -70,7 +76,7 @@
       if (isMobile) {
         if (warningImage) warningImage.style.display = "block";
         if (introText) introText.style.display = "none";
-        return; // No cargamos más controles para móviles
+        return; // Detener ejecución para móviles
       }
 
       // Audio controls
@@ -78,7 +84,7 @@
       const playAudio = document.getElementById('playAudio');
       const volumeControl = document.getElementById('volumeControl');
 
-      // Set initial volume
+      // Inicializar volumen
       audio.volume = volumeControl.value;
 
       playAudio.addEventListener('click', () => {
@@ -97,7 +103,7 @@
         audio.volume = volumeControl.value;
       });
 
-      // Botón PLAY para ir a level1
+      // Botón PLAY que redirige a level1
       const playBtn = document.getElementById('playBtn');
       if (playBtn) {
         playBtn.addEventListener('click', () => {
