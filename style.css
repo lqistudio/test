@@ -57,7 +57,19 @@ body {
   line-height: 1.4;
 }
 
-/* Ajuste: más espacio arriba del botón PLAY */
+/* Separar texto y botones */
+.text-container {
+  margin-bottom: 50px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Botón PLAY */
 button#playBtn {
   font-size: 24px;
   padding: 15px 30px;
@@ -67,16 +79,14 @@ button#playBtn {
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 40px; /* espacio extra arriba */
 }
 
 button#playBtn:hover {
   background-color: #6f00ff;
 }
 
-/* Ajuste: más espacio entre botón PLAY y controles de audio */
+/* Controles de audio */
 .audio-controls {
-  margin-top: 20px; /* espacio extra arriba */
   display: flex;
   justify-content: center;
   gap: 10px;
