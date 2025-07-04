@@ -4,14 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nivel 1 - Olvidé mi Contraseña</title>
-  <link rel="stylesheet" href="style.css" />
+
   <style>
     @font-face {
       font-family: 'Oxanium';
       src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
     }
 
-    * {
+    /* Reset y caja de modelo */
+    *, *::before, *::after {
       box-sizing: border-box;
     }
 
@@ -22,8 +23,10 @@
       font-family: 'Oxanium', sans-serif;
       background: transparent;
       color: white;
+      user-select: none; /* evitar selección general */
     }
 
+    /* Fondo gradiente animado */
     #backgroundGradient {
       position: fixed;
       top: 0; left: 0;
@@ -34,20 +37,21 @@
       z-index: 0;
     }
 
+    /* Imagen encima del gradiente */
     #backgroundImage {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: url('assets/images/wall.png') no-repeat center center;
       background-size: cover;
-      z-index: 50;
       pointer-events: none;
+      z-index: 50;
     }
 
+    /* Contenedor principal nivel 1 */
     .container {
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       z-index: 8888;
       background: rgba(15, 15, 15, 0.85);
@@ -56,6 +60,8 @@
       box-shadow: 0 0 15px #8a00ff;
       width: 320px;
       text-align: center;
+      color: #eee;
+      user-select: text; /* permitir seleccionar texto dentro */
     }
 
     h1 {
@@ -64,7 +70,8 @@
       text-shadow: 0 0 10px #af00ff;
     }
 
-    input {
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 14px;
       margin: 10px 0;
@@ -74,14 +81,18 @@
       color: #eee;
       box-shadow: 0 0 8px #8000ff inset;
       font-size: 1rem;
+      outline: none;
+      user-select: text;
+      transition: background 0.3s, box-shadow 0.3s;
     }
 
-    input:focus {
+    input[type="text"]:focus,
+    input[type="password"]:focus {
       background: #3c3c3c;
       box-shadow: 0 0 10px #bf00ff inset;
     }
 
-    #loginBtn {
+    button#loginBtn {
       margin-top: 15px;
       width: 100%;
       padding: 14px;
@@ -93,9 +104,11 @@
       font-size: 1.1rem;
       cursor: pointer;
       box-shadow: 0 0 15px #bf00ff;
+      user-select: none;
+      transition: background 0.3s;
     }
 
-    #loginBtn:hover {
+    button#loginBtn:hover {
       background: #af00ff;
     }
 
@@ -103,8 +116,10 @@
       margin-top: 15px;
       font-size: 0.9rem;
       min-height: 1.2em;
+      user-select: none;
     }
 
+    /* Botón salir del juego */
     #exitBtn {
       position: fixed;
       top: 20px;
@@ -120,8 +135,15 @@
       font-size: 1rem;
       cursor: pointer;
       box-shadow: 0 0 10px #ff0055;
+      user-select: none;
+      transition: background 0.3s;
     }
 
+    #exitBtn:hover {
+      background: #ff3366;
+    }
+
+    /* Animación del fondo */
     @keyframes gradientAnimation {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -133,7 +155,7 @@
   <div id="backgroundGradient"></div>
   <div id="backgroundImage"></div>
 
-  <button id="exitBtn">Salir del juego</button>
+  <button id="exitBtn" title="Salir del juego">Salir del juego</button>
 
   <main class="container">
     <h1>Nivel 1 - Inicia sesión... si puedes 😏</h1>
@@ -154,13 +176,19 @@
     loginBtn.addEventListener("mouseover", () => {
       if (accessGranted) return;
       if (password.value === "" || password.value !== "1234") {
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 200 - 100;
-        loginBtn.style.transition = "transform 0.2s ease";
+        const maxMove = 120;
+        const x = Math.random() * maxMove * 2 - maxMove;
+        const y = Math.random() * maxMove * 2 - maxMove;
+        loginBtn.style.transition = "transform 0.15s ease";
         loginBtn.style.transform = `translate(${x}px, ${y}px)`;
         message.textContent = "⚠️ Intento no autorizado...";
         message.style.color = "#ff0055";
         message.style.textShadow = "0 0 8px #ff0055";
+        message.animate([
+          { opacity: 1 },
+          { opacity: 0.3 },
+          { opacity: 1 }
+        ], { duration: 300, iterations: 2 });
       }
     });
 
@@ -174,6 +202,9 @@
       } else {
         message.textContent = "❌ Contraseña incorrecta.";
         message.style.color = "#ff66c4";
+        message.style.textShadow = "0 0 6px #ff66c4";
+        loginBtn.style.transition = "transform 0.2s ease";
+        loginBtn.style.transform = "translate(0, 0)";
       }
     });
 
@@ -181,9 +212,8 @@
       window.location.href = "index.html";
     });
 
+    // Bloquear solo menú contextual (clic derecho)
     document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('selectstart', e => e.preventDefault());
-    document.addEventListener('dragstart', e => e.preventDefault());
   </script>
 </body>
 </html>
