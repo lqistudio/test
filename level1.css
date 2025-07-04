@@ -1,0 +1,45 @@
+/* level1.css */
+
+.level1 #backgroundGradient {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+  background-size: 600% 600%;
+  animation: gradientAnimation 15s ease infinite;
+  z-index: 0;
+}
+
+.level1 #backgroundImage {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: url('assets/images/wall.png') no-repeat center center;
+  background-size: cover;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.level1 .container {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 8888;
+  background: rgba(15,15,15,0.85);
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #8a00ff;
+  width: 320px;
+  text-align: center;
+  color: #eee;
+  user-select: none;
+}
+
+/* y así con todos los estilos de level1... */
+
+/* Animación fondo */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
