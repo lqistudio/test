@@ -7,12 +7,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Fondo gradiente -->
   <div id="backgroundGradient"></div>
+
+  <!-- Imagen fija wall.png -->
   <div id="backgroundImage"></div>
 
-  <!-- ⚠️ Imagen de advertencia SOLO para móvil -->
+  <!-- Imagen de advertencia para móviles -->
   <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
 
+  <!-- Contenido principal -->
   <div class="intro" id="introText">
     <div class="text-container">
       <h2 class="instructions">
@@ -37,6 +41,16 @@
     <source src="music.mp3" type="audio/mpeg" />
   </audio>
 
+  <script>
+    // Mostrar imagen de advertencia si es móvil
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      const warningImage = document.getElementById("mobileWarning");
+      if (warningImage) {
+        warningImage.style.display = "block";
+      }
+    }
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
