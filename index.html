@@ -1,19 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LOGIN - Nivel 1</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olvidé mi Contraseña - LQISTUDIO</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Inicia sesión... si puedes 😏</h1>
-    <input type="text" id="username" placeholder="Nombre de usuario" />
-    <input type="password" id="password" placeholder="Contraseña" />
-    <button id="loginBtn">Ingresar</button>
-    <p id="message"></p>
+  <div id="loading">Cargando...</div>
+
+  <div class="intro hidden" id="introText">
+    <p class="typing">
+      El mundo digital colapsó... <br>
+      Los sistemas de acceso fueron bloqueados por un firewall inteligente.<br>
+      La única forma de restaurarlo: recordar cómo iniciar sesión.<br><br>
+      <strong>Bienvenido a “Olvidé mi Contraseña”.</strong><br>
+      Un experimento de <em>LQISTUDIO</em> con 100 formas de ingresar.<br><br>
+    </p>
+    <button id="playBtn">🎮 PLAY</button>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
