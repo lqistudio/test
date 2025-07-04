@@ -23,11 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isMobile) {
     // Mostrar advertencia para móvil
     if (mobileWarning) mobileWarning.style.display = "block";
-    // Ocultar contenido principal (juego)
     if (introText) introText.style.display = "none";
   } else {
-    // Solo en desktop: activar audio y controles
-
+    // PLAY / PAUSE
     playAudio.addEventListener("click", () => {
       if (audio.paused) {
         audio.play();
@@ -38,10 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // CONTROL DE VOLUMEN
+    const updateVolumeStyle = (value) => {
+      let color = "#0f0"; // verde por defecto
+      if (value < 0.34) color = "#f00"; // rojo
+      else if (value < 0.67) color = "#ff0"; // amarillo
+
+      volumeControl.style.background = `linear-gradient(90deg, ${color} ${value * 100}%, #333 ${value * 100}%)`;
+    };
+
+    // Estilo inicial de la barra
+    updateVolumeStyle(audio.volume);
+
     volumeControl.addEventListener("input", () => {
-      audio.volume = volumeControl.value;
+      const value = parseFloat(volumeControl.value);
+      audio.volume = value;
+      updateVolumeStyle(value);
     });
 
+    // LOGIN
     if (loginBtn) {
       loginBtn.addEventListener("click", () => {
         if (password.value === "1234") {
