@@ -87,6 +87,7 @@ body {
 
 /* Botón de juego */
 button#playBtn {
+  position: relative;
   font-size: 24px;
   padding: 15px 30px;
   background-color: #4e00ff;
@@ -94,11 +95,49 @@ button#playBtn {
   border-radius: 10px;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
+  font-family: 'Oxanium', sans-serif;
+  overflow: hidden;
+  z-index: 1;
+}
+
+button#playBtn::after {
+  content: "💀 HACKED ⚠️░█▒💀";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #0f0;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #f0f, 0 0 10px #0ff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 button#playBtn:hover {
   background-color: #6f00ff;
+  transform: scale(1.05);
+}
+
+button#playBtn:hover::after {
+  opacity: 1;
+  animation: glitchText 0.3s steps(2, end) infinite;
+}
+
+@keyframes glitchText {
+  0% { transform: translate(0px, 0px); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0px, 0px); }
 }
 
 /* Controles de audio */
@@ -109,7 +148,6 @@ button#playBtn:hover {
   align-items: center;
 }
 
-/* Estilo del botón de audio */
 .audio-controls button {
   font-size: 24px;
   background: none;
@@ -118,7 +156,7 @@ button#playBtn:hover {
   cursor: pointer;
 }
 
-/* 🎧 Barra de volumen hacker-style */
+/* 🎧 Barra de volumen estilo hacker */
 .audio-controls input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -132,7 +170,6 @@ button#playBtn:hover {
   transition: background 0.3s ease;
 }
 
-/* Track interior */
 .audio-controls input[type="range"]::-webkit-slider-runnable-track {
   height: 10px;
   border-radius: 5px;
@@ -140,7 +177,6 @@ button#playBtn:hover {
   box-shadow: inset 0 0 5px #0ff;
 }
 
-/* Thumb (punto deslizable) */
 .audio-controls input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 18px;
@@ -157,7 +193,6 @@ button#playBtn:hover {
   background: #fff;
 }
 
-/* Firefox thumb */
 .audio-controls input[type="range"]::-moz-range-thumb {
   width: 18px;
   height: 18px;
@@ -174,13 +209,7 @@ button#playBtn:hover {
 
 /* Animación del fondo */
 @keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
