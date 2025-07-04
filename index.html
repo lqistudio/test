@@ -36,10 +36,6 @@
       width: 150px;
       cursor: pointer;
     }
-    /* Cursor pointer para el botón PLAY */
-    #playBtn {
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -64,14 +60,7 @@
 
       <div class="audio-controls">
         <button id="playAudio" title="Reproducir música">▶️</button>
-        <input
-          type="range"
-          id="volumeControl"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0.7"
-        />
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
       </div>
     </div>
   </div>
@@ -79,7 +68,7 @@
   <audio id="bgMusic" loop preload="auto" src="Mechstorm.mp3"></audio>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener('DOMContentLoaded', () => {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       const warningImage = document.getElementById("mobileWarning");
       const introText = document.getElementById("introText");
@@ -91,14 +80,14 @@
       }
 
       // Audio controls
-      const audio = document.getElementById("bgMusic");
-      const playAudio = document.getElementById("playAudio");
-      const volumeControl = document.getElementById("volumeControl");
+      const audio = document.getElementById('bgMusic');
+      const playAudio = document.getElementById('playAudio');
+      const volumeControl = document.getElementById('volumeControl');
 
-      // Inicializar volumen (asegurando número)
-      audio.volume = parseFloat(volumeControl.value) || 0.7;
+      // Inicializar volumen
+      audio.volume = volumeControl.value;
 
-      playAudio.addEventListener("click", () => {
+      playAudio.addEventListener('click', () => {
         if (audio.paused) {
           audio.play();
           playAudio.textContent = "⏸️";
@@ -110,16 +99,16 @@
         }
       });
 
-      volumeControl.addEventListener("input", () => {
-        audio.volume = parseFloat(volumeControl.value);
+      volumeControl.addEventListener('input', () => {
+        audio.volume = volumeControl.value;
       });
 
       // Botón PLAY que redirige a level1
-      const playBtn = document.getElementById("playBtn");
+      const playBtn = document.getElementById('playBtn');
       if (playBtn) {
-        playBtn.addEventListener("click", () => {
-          sessionStorage.setItem("canPlayLevel1", "true");
-          window.location.href = "level1.html";
+        playBtn.addEventListener('click', () => {
+          sessionStorage.setItem('canPlayLevel1', 'true');
+          window.location.href = 'level1.html';
         });
       }
     });
