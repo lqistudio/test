@@ -7,43 +7,11 @@
   <title>Nivel 1 - Olvidé mi Contraseña</title>
   <link rel="stylesheet" href="style.css" />
   <script>
-    // Verificar acceso permitido
+    // Verificar acceso autorizado
     document.addEventListener('DOMContentLoaded', () => {
       const canPlay = sessionStorage.getItem('canPlayLevel1');
       if (canPlay !== 'true') {
-        // No tiene permiso, redirigir a index
-        window.location.href = 'index.html';
-      }
-    });
-  </script>
-</head>
-<body>
-  <main class="container">
-    <h1>Nivel 1 - Inicia sesión... si puedes 😏</h1>
-
-    <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="off" />
-    <input type="password" id="password" placeholder="Contraseña" autocomplete="off" />
-    <button id="loginBtn">Ingresar</button>
-    <p id="message"></p>
-  </main>
-
-  <script src="level1.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Nivel 1 del juego 'Olvidé mi Contraseña' – Intenta iniciar sesión si puedes.">
-  <title>Nivel 1 - Olvidé mi Contraseña</title>
-  <link rel="stylesheet" href="style.css" />
-  <script>
-    // Verificar acceso permitido
-    document.addEventListener('DOMContentLoaded', () => {
-      const canPlay = sessionStorage.getItem('canPlayLevel1');
-      if (canPlay !== 'true') {
-        // No tiene permiso, redirigir a index
+        // No autorizado, redirigir al index
         window.location.href = 'index.html';
       }
     });
