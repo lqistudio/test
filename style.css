@@ -12,50 +12,40 @@
 body {
   margin: 0;
   height: 100vh;
-  font-family: 'Oxanium', sans-serif;
-  
-  /* Imagen fija, centrada y expandida */
-  background-image: url('assets/images/wall.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
+  font-family: 'Oxanium', sans-serif;
   color: white;
   position: relative;
-  z-index: 10;
+  background: transparent; /* Importante que no haya fondo blanco */
 }
 
-/* Fondo degradado animado detrás */
+/* Fondo gradiente animado */
 #backgroundGradient {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
   background-size: 600% 600%;
   animation: gradientAnimation 15s ease infinite;
+  z-index: 1;
 }
 
-/* Animación que mueve el gradiente de lado a lado */
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Imagen fija encima del gradiente */
+#backgroundImage {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: url('assets/images/wall.png') no-repeat center center;
+  background-size: cover;
+  pointer-events: none; /* Para que no interfiera con clicks */
+  z-index: 5;
 }
 
-/* El contenedor con el texto debe estar sobre todo */
+/* Contenido encima de todo */
 .intro {
   position: relative;
-  z-index: 20;
+  z-index: 10;
   text-align: center;
-  max-width: 600px;
   padding: 20px;
 }
 
@@ -67,7 +57,7 @@ body {
   line-height: 1.4;
 }
 
-/* Botón y controles (ajusta si quieres) */
+/* Botón PLAY */
 button#playBtn {
   font-size: 24px;
   padding: 15px 30px;
@@ -83,6 +73,7 @@ button#playBtn:hover {
   background-color: #6f00ff;
 }
 
+/* Controles de audio */
 .audio-controls {
   margin-top: 15px;
   display: flex;
@@ -101,4 +92,11 @@ button#playBtn:hover {
 
 .audio-controls input[type="range"] {
   width: 150px;
+}
+
+/* Animación para gradiente */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
