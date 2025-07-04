@@ -1,163 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Nivel 1 - Olvidé mi Contraseña</title>
-<style>
-  @font-face {
-    font-family: 'Oxanium';
-    src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nivel 1 - Olvidé mi Contraseña</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    @font-face {
+      font-family: 'Oxanium';
+      src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
+    }
 
-  * {
-    box-sizing: border-box;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    font-family: 'Oxanium', sans-serif;
-    color: white;
-    background: transparent;
-    user-select: none; /* bloquear selección en todo */
-  }
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Oxanium', sans-serif;
+      background: transparent;
+      color: white;
+    }
 
-  input, textarea {
-    user-select: text; /* permitir selección en inputs y textarea */
-  }
+    #backgroundGradient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+      background-size: 600% 600%;
+      animation: gradientAnimation 15s ease infinite;
+      z-index: 0;
+    }
 
-  /* Fondo gradiente animado */
-  #backgroundGradient {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
-    background-size: 600% 600%;
-    animation: gradientAnimation 15s ease infinite;
-    z-index: 0;
-  }
+    #backgroundImage {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('assets/images/wall.png') no-repeat center center;
+      background-size: cover;
+      z-index: 50;
+      pointer-events: none;
+    }
 
-  /* Imagen wall encima del gradiente */
-  #backgroundImage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: url('assets/images/wall.png') no-repeat center center;
-    background-size: cover;
-    pointer-events: none;
-    z-index: 50;
-  }
+    .container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 8888;
+      background: rgba(15, 15, 15, 0.85);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #8a00ff;
+      width: 320px;
+      text-align: center;
+    }
 
-  /* Botón salir fijo arriba derecha */
-  #exitBtn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    background: #bf00ff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 18px;
-    font-weight: 700;
-    font-family: 'Oxanium', sans-serif;
-    cursor: pointer;
-    box-shadow: 0 0 12px #df40ff;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
-  #exitBtn:hover {
-    background: #df40ff;
-    box-shadow: 0 0 18px #ff80ff;
-  }
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #af00ff;
+    }
 
-  /* Contenedor login arriba de todo */
-  .container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 8888;
-    background: rgba(15, 15, 15, 0.85);
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px #8a00ff;
-    width: 320px;
-    text-align: center;
-    font-family: 'Oxanium', sans-serif;
-    color: #eee;
-  }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      background: #2a2a2a;
+      color: #eee;
+      box-shadow: 0 0 8px #8000ff inset;
+      font-size: 1rem;
+    }
 
-  .container h1 {
-    font-weight: 700;
-    margin-bottom: 25px;
-    font-size: 1.4rem;
-    text-shadow: 0 0 10px #af00ff;
-  }
+    input:focus {
+      background: #3c3c3c;
+      box-shadow: 0 0 10px #bf00ff inset;
+    }
 
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 14px 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: #eee;
-    font-size: 1rem;
-    outline: none;
-    box-shadow: 0 0 8px #8000ff inset;
-    transition: background 0.3s;
-  }
+    #loginBtn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 14px;
+      background: #8a00ff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px #bf00ff;
+    }
 
-  input[type="text"]:focus,
-  input[type="password"]:focus {
-    background: #3c3c3c;
-    box-shadow: 0 0 10px #bf00ff inset;
-  }
+    #loginBtn:hover {
+      background: #af00ff;
+    }
 
-  button#loginBtn {
-    margin-top: 20px;
-    width: 100%;
-    padding: 14px 0;
-    background: #8a00ff;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    box-shadow: 0 0 15px #bf00ff;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
+    #message {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      min-height: 1.2em;
+    }
 
-  button#loginBtn:hover {
-    background: #af00ff;
-    box-shadow: 0 0 20px #df40ff;
-  }
+    #exitBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      padding: 10px 20px;
+      background: #ff0044;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-family: 'Oxanium', sans-serif;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff0055;
+    }
 
-  #message {
-    margin-top: 15px;
-    min-height: 1.2em;
-    font-size: 0.9rem;
-    color: #ff4a4a;
-    text-shadow: 0 0 5px #ff0000;
-  }
-
-  /* Animación del fondo */
-  @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-</style>
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
 </head>
 <body>
   <div id="backgroundGradient"></div>
@@ -167,69 +137,53 @@
 
   <main class="container">
     <h1>Nivel 1 - Inicia sesión... si puedes 😏</h1>
-
     <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="off" />
     <input type="password" id="password" placeholder="Contraseña" autocomplete="off" />
     <button id="loginBtn">Ingresar</button>
     <p id="message"></p>
   </main>
 
-<script>
-  // Bloquear menú contextual (clic derecho)
-  document.addEventListener('contextmenu', e => e.preventDefault());
+  <script>
+    const loginBtn = document.getElementById("loginBtn");
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const message = document.getElementById("message");
 
-  // Botón salir
-  const exitBtn = document.getElementById('exitBtn');
-  exitBtn.addEventListener('click', () => {
-    window.location.href = 'index.html'; // Redirige al menú inicial
-  });
+    let accessGranted = false;
 
-  const loginBtn = document.getElementById("loginBtn");
-  const username = document.getElementById("username");
-  const password = document.getElementById("password");
-  const message = document.getElementById("message");
+    loginBtn.addEventListener("mouseover", () => {
+      if (accessGranted) return;
+      if (password.value === "" || password.value !== "1234") {
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 200 - 100;
+        loginBtn.style.transition = "transform 0.2s ease";
+        loginBtn.style.transform = `translate(${x}px, ${y}px)`;
+        message.textContent = "⚠️ Intento no autorizado...";
+        message.style.color = "#ff0055";
+        message.style.textShadow = "0 0 8px #ff0055";
+      }
+    });
 
-  let accessGranted = false;
+    loginBtn.addEventListener("click", () => {
+      if (password.value === "1234") {
+        accessGranted = true;
+        message.textContent = `✅ Bienvenido, ${username.value || "hacker"}.`;
+        message.style.color = "#00ffcc";
+        message.style.textShadow = "0 0 8px #00ffcc";
+        loginBtn.style.transform = "translate(0, 0)";
+      } else {
+        message.textContent = "❌ Contraseña incorrecta.";
+        message.style.color = "#ff66c4";
+      }
+    });
 
-  loginBtn.addEventListener("mouseover", () => {
-    if (accessGranted) return;
+    document.getElementById("exitBtn").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
 
-    if (password.value === "" || password.value !== "1234") {
-      const maxMove = 120;
-      const x = Math.random() * maxMove * 2 - maxMove;
-      const y = Math.random() * maxMove * 2 - maxMove;
-
-      loginBtn.style.transition = "transform 0.15s ease";
-      loginBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-      message.textContent = "⚠️ Intento no autorizado...";
-      message.style.color = "#ff0055";
-      message.style.textShadow = "0 0 8px #ff0055";
-
-      message.animate([
-        { opacity: 1 },
-        { opacity: 0.3 },
-        { opacity: 1 }
-      ], { duration: 300, iterations: 2 });
-    }
-  });
-
-  loginBtn.addEventListener("click", () => {
-    if (password.value === "1234") {
-      accessGranted = true;
-      message.textContent = `✅ Bienvenido, ${username.value || "hacker"}.`;
-      message.style.color = "#00ffcc";
-      message.style.textShadow = "0 0 8px #00ffcc";
-      loginBtn.style.transform = "translate(0, 0)";
-    } else {
-      message.textContent = "❌ Contraseña incorrecta.";
-      message.style.color = "#ff66c4";
-      message.style.textShadow = "0 0 6px #ff66c4";
-      loginBtn.style.transition = "transform 0.2s ease";
-      loginBtn.style.transform = "translate(0, 0)";
-    }
-  });
-</script>
-
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+  </script>
 </body>
 </html>
