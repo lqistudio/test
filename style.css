@@ -1,218 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Nivel 1 - Olvidé mi Contraseña</title>
-<style>
-  @font-face {
-    font-family: 'Oxanium';
-    src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+/* style.css */
 
-  * {
-    box-sizing: border-box;
-  }
+/* Fuente general */
+@font-face {
+  font-family: 'Oxanium';
+  src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-  body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    font-family: 'Oxanium', sans-serif;
-    color: white;
-    background: transparent;
-  }
+body {
+  margin: 0;
+  font-family: 'Oxanium', sans-serif;
+  color: white;
+  background: #000;
+  overflow: hidden;
+}
 
-  /* Fondo gradiente animado */
-  #backgroundGradient {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
-    background-size: 600% 600%;
-    animation: gradientAnimation 15s ease infinite;
-    z-index: 0;
-  }
+/* Botones globales */
+button.global-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background-color: #8a00ff;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 10px #bf00ff;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
 
-  /* Imagen wall encima del gradiente */
-  #backgroundImage {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: url('assets/images/wall.png') no-repeat center center;
-    background-size: cover;
-    pointer-events: none;
-    z-index: 50;
-  }
+button.global-btn:hover {
+  background-color: #af00ff;
+}
 
-  /* Contenedor login */
-  .container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 8888; /* Muy arriba */
-    background: rgba(15, 15, 15, 0.85);
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px #8a00ff;
-    width: 320px;
-    text-align: center;
-    font-family: 'Oxanium', sans-serif;
-    color: #eee;
+/* Botón salir, posición fija superior derecha */
+button#btnExitGame {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 10000;
+}
 
-    /* Evitar selección de texto */
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
-
-  .container h1 {
-    font-weight: 700;
-    margin-bottom: 25px;
-    font-size: 1.4rem;
-    text-shadow: 0 0 10px #af00ff;
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 14px 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
-    color: #eee;
-    font-size: 1rem;
-    outline: none;
-    box-shadow: 0 0 8px #8000ff inset;
-    transition: background 0.3s;
-    user-select: text; /* Permitir selección dentro de inputs */
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-  }
-
-  input[type="text"]:focus,
-  input[type="password"]:focus {
-    background: #3c3c3c;
-    box-shadow: 0 0 10px #bf00ff inset;
-  }
-
-  button#loginBtn {
-    margin-top: 20px;
-    width: 100%;
-    padding: 14px 0;
-    background: #8a00ff;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    box-shadow: 0 0 15px #bf00ff;
-    transition: background 0.3s, box-shadow 0.3s;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
-
-  button#loginBtn:hover {
-    background: #af00ff;
-    box-shadow: 0 0 20px #df40ff;
-  }
-
-  #message {
-    margin-top: 15px;
-    min-height: 1.2em;
-    font-size: 0.9rem;
-    color: #ff4a4a;
-    text-shadow: 0 0 5px #ff0000;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  }
-
-  /* Animación del fondo */
-  @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-</style>
-</head>
-<body>
-  <div id="backgroundGradient"></div>
-  <div id="backgroundImage"></div>
-
-  <main class="container">
-    <h1>Nivel 1 - Inicia sesión... si puedes 😏</h1>
-
-    <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="off" />
-    <input type="password" id="password" placeholder="Contraseña" autocomplete="off" />
-    <button id="loginBtn">Ingresar</button>
-    <p id="message"></p>
-  </main>
-
-<script>
-  // Bloquear menú contextual (clic derecho)
-  document.addEventListener('contextmenu', e => e.preventDefault());
-
-  const loginBtn = document.getElementById("loginBtn");
-  const username = document.getElementById("username");
-  const password = document.getElementById("password");
-  const message = document.getElementById("message");
-
-  let accessGranted = false;
-
-  loginBtn.addEventListener("mouseover", () => {
-    if (accessGranted) return;
-
-    if (password.value === "" || password.value !== "1234") {
-      const maxMove = 120;
-      const x = Math.random() * maxMove * 2 - maxMove;
-      const y = Math.random() * maxMove * 2 - maxMove;
-
-      loginBtn.style.transition = "transform 0.15s ease";
-      loginBtn.style.transform = `translate(${x}px, ${y}px)`;
-
-      message.textContent = "⚠️ Intento no autorizado...";
-      message.style.color = "#ff0055";
-      message.style.textShadow = "0 0 8px #ff0055";
-
-      message.animate([
-        { opacity: 1 },
-        { opacity: 0.3 },
-        { opacity: 1 }
-      ], { duration: 300, iterations: 2 });
-    }
-  });
-
-  loginBtn.addEventListener("click", () => {
-    if (password.value === "1234") {
-      accessGranted = true;
-      message.textContent = `✅ Bienvenido, ${username.value || "hacker"}.`;
-      message.style.color = "#00ffcc";
-      message.style.textShadow = "0 0 8px #00ffcc";
-      loginBtn.style.transform = "translate(0, 0)";
-    } else {
-      message.textContent = "❌ Contraseña incorrecta.";
-      message.style.color = "#ff66c4";
-      message.style.textShadow = "0 0 6px #ff66c4";
-      loginBtn.style.transition = "transform 0.2s ease";
-      loginBtn.style.transform = "translate(0, 0)";
-    }
-  });
-</script>
-
-</body>
-</html>
+/* Menú inicial, pausa, etc. estilos comunes aquí */
+.menu-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  font-size: 1.3rem;
+}
