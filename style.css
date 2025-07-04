@@ -16,10 +16,10 @@ body {
   font-family: 'Oxanium', sans-serif;
   color: white;
   position: relative;
-  background: transparent; /* Sin fondo que tape */
+  background: transparent;
 }
 
-/* Gradiente animado atrás */
+/* Fondo gradiente animado */
 #backgroundGradient {
   position: fixed;
   top: 0; left: 0;
@@ -30,7 +30,7 @@ body {
   z-index: 0;
 }
 
-/* Imagen fija encima del gradiente */
+/* Imagen wall encima del gradiente */
 #backgroundImage {
   position: fixed;
   top: 0; left: 0;
@@ -41,7 +41,19 @@ body {
   z-index: 50;
 }
 
-/* Contenido arriba de todo */
+/* ⚠️ Imagen que aparece solo en móvil */
+#mobileWarning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 99999;
+}
+
+/* Contenido principal */
 .intro {
   position: relative;
   z-index: 9999;
@@ -57,7 +69,6 @@ body {
   line-height: 1.4;
 }
 
-/* Separar texto y botones */
 .text-container {
   margin-bottom: 200px;
 }
@@ -69,7 +80,6 @@ body {
   gap: 20px;
 }
 
-/* Botón PLAY */
 button#playBtn {
   font-size: 24px;
   padding: 15px 30px;
@@ -85,7 +95,6 @@ button#playBtn:hover {
   background-color: #6f00ff;
 }
 
-/* Controles de audio */
 .audio-controls {
   display: flex;
   justify-content: center;
@@ -105,7 +114,6 @@ button#playBtn:hover {
   width: 150px;
 }
 
-/* Animación para gradiente */
 @keyframes gradientAnimation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
