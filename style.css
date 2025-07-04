@@ -16,10 +16,10 @@ body {
   font-family: 'Oxanium', sans-serif;
   color: white;
   position: relative;
-  background: transparent; /* Importante que no haya fondo blanco */
+  background: transparent; /* Sin fondo que tape */
 }
 
-/* Fondo gradiente animado */
+/* Gradiente animado atrás */
 #backgroundGradient {
   position: fixed;
   top: 0; left: 0;
@@ -27,7 +27,7 @@ body {
   background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
   background-size: 600% 600%;
   animation: gradientAnimation 15s ease infinite;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Imagen fija encima del gradiente */
@@ -37,14 +37,14 @@ body {
   width: 100vw; height: 100vh;
   background: url('assets/images/wall.png') no-repeat center center;
   background-size: cover;
-  pointer-events: none; /* Para que no interfiera con clicks */
-  z-index: 5;
+  pointer-events: none;
+  z-index: 50;
 }
 
-/* Contenido encima de todo */
+/* Contenido arriba de todo */
 .intro {
   position: relative;
-  z-index: 10;
+  z-index: 9999;
   text-align: center;
   padding: 20px;
 }
