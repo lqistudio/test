@@ -6,7 +6,6 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Estilo para la imagen de advertencia en móvil */
     #mobileWarning {
       display: none;
       position: fixed;
@@ -15,9 +14,8 @@
       height: 100vh;
       object-fit: cover;
       z-index: 99999;
-      background-color: #000; /* fondo negro para evitar transparencias */
+      background-color: #000;
     }
-    /* Controles de audio */
     .audio-controls {
       margin-top: 15px;
       display: flex;
@@ -76,15 +74,13 @@
       if (isMobile) {
         if (warningImage) warningImage.style.display = "block";
         if (introText) introText.style.display = "none";
-        return; // Detener ejecución para móviles
+        return;
       }
 
-      // Audio controls
       const audio = document.getElementById('bgMusic');
       const playAudio = document.getElementById('playAudio');
       const volumeControl = document.getElementById('volumeControl');
 
-      // Inicializar volumen
       audio.volume = volumeControl.value;
 
       playAudio.addEventListener('click', () => {
@@ -103,7 +99,6 @@
         audio.volume = volumeControl.value;
       });
 
-      // Botón PLAY que redirige a level1
       const playBtn = document.getElementById('playBtn');
       if (playBtn) {
         playBtn.addEventListener('click', () => {
@@ -112,6 +107,13 @@
         });
       }
     });
+  </script>
+
+  <!-- Protección extra para evitar selección/click derecho -->
+  <script>
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
   </script>
 </body>
 </html>
