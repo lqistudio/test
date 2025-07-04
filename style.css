@@ -22,8 +22,10 @@ body {
 /* Fondo gradiente animado */
 #backgroundGradient {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
   background-size: 600% 600%;
   animation: gradientAnimation 15s ease infinite;
@@ -33,15 +35,17 @@ body {
 /* Imagen wall encima del gradiente */
 #backgroundImage {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: url('assets/images/wall.png') no-repeat center center;
   background-size: cover;
   pointer-events: none;
   z-index: 50;
 }
 
-/* ⚠️ Imagen que aparece solo en móvil */
+/* Imagen solo para móviles */
 #mobileWarning {
   display: none;
   position: fixed;
@@ -69,6 +73,7 @@ body {
   line-height: 1.4;
 }
 
+/* Margen entre texto y botones */
 .text-container {
   margin-bottom: 200px;
 }
@@ -114,8 +119,15 @@ button#playBtn:hover {
   width: 150px;
 }
 
+/* Animación para el fondo */
 @keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
