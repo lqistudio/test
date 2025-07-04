@@ -5,6 +5,10 @@
   font-style: normal;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Oxanium', sans-serif;
   background: url('assets/images/wall.png') no-repeat center center fixed;
@@ -15,6 +19,7 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  overflow: hidden;
 }
 
 .container {
@@ -23,16 +28,34 @@ body {
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 20px #4e00ff66;
+  width: 90%;
+  max-width: 400px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #fff;
+  text-shadow: 0 0 5px #4e00ff99;
 }
 
 input {
   display: block;
   margin: 10px auto;
   padding: 10px;
-  width: 200px;
+  width: 100%;
   font-size: 16px;
   border-radius: 8px;
   border: none;
+  background: #111;
+  color: #fff;
+  box-shadow: 0 0 5px #4e00ff55 inset;
+  transition: background 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  background: #222;
 }
 
 button {
@@ -44,16 +67,40 @@ button {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
+  margin-top: 10px;
+  width: 100%;
 }
 
 button:hover {
   background: #6f00ff;
+  box-shadow: 0 0 10px #6f00ffaa;
 }
 
 #message {
   margin-top: 15px;
   font-weight: bold;
+  font-size: 14px;
+  color: #ff66c4;
+  text-shadow: 0 0 3px #000;
 }
 
-/* 🎧 Estilos p*
+/* 🎧 Estilos para controles de audio o futuros hacks */
+.audio-controls {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.audio-controls button {
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: #eee;
+  cursor: pointer;
+}
+
+.audio-controls input[type="range"] {
+  width: 150px;
+}
