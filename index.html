@@ -90,31 +90,21 @@
       playBtn.addEventListener('click', async () => {
         introText.classList.add('hidden');
         try {
-          const response = await fetch('level1.html');
+          // Carga el contenido HTML parcial del nivel
+          const response = await fetch('level1-content.html');
           const html = await response.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const levelMain = doc.querySelector('main') || doc.body;
 
-          // Cargar solo el contenido principal
-          levelContainer.innerHTML = '';
-          levelContainer.appendChild(levelMain);
+          // Inserta directamente el HTML dentro del contenedor
+          levelContainer.innerHTML = html;
 
-          // Cargar también el script del nivel
-          const script = doc.querySelector('script');
-          if (script) {
-            const newScript = document.createElement('script');
-            newScript.textContent = script.textContent;
-            levelContainer.appendChild(newScript);
-          }
+          // Carga dinámicamente el script externo para el nivel
+          const existingScript = document.getElementById('levelScript');
+          if (existingScript) existingScript.remove(); // elimina si ya existe para recargar
 
-          // Si el nivel usa un CSS independiente
-          const levelCSS = doc.querySelectorAll('link[rel="stylesheet"]');
-          levelCSS.forEach(link => {
-            if (!document.querySelector(`link[href="${link.href}"]`)) {
-              document.head.appendChild(link.cloneNode());
-            }
-          });
+          const script = document.createElement('script');
+          script.src = 'level1.js';
+          script.id = 'levelScript';
+          document.body.appendChild(script);
 
         } catch (error) {
           console.error('Error al cargar el nivel:', error);
@@ -122,7 +112,7 @@
       });
     });
 
-    // Protecciones
+    // Protecciones para evitar clic derecho, selección y arrastre
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('selectstart', e => e.preventDefault());
     document.addEventListener('dragstart', e => e.preventDefault());
