@@ -1,21 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Nivel 1 del juego 'Olvidé mi Contraseña' – Intenta iniciar sesión si puedes.">
   <title>Nivel 1 - Olvidé mi Contraseña</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <h1>Nivel 1 - Inicia sesión... si puedes 😏</h1>
 
-    <input type="text" id="username" placeholder="Nombre de usuario" />
-    <input type="password" id="password" placeholder="Contraseña" />
+    <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="off" />
+    <input type="password" id="password" placeholder="Contraseña" autocomplete="off" />
     <button id="loginBtn">Ingresar</button>
     <p id="message"></p>
-  </div>
+  </main>
+
   <script src="level1.js"></script>
 </body>
 </html>
