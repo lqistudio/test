@@ -1,33 +1,26 @@
-window.onload = () => {
-  const loading = document.getElementById("loading");
-  const intro = document.getElementById("introText");
-  const bgMusic = document.getElementById("bgMusic");
-  const muteBtn = document.getElementById("muteBtn");
-  const volSlider = document.getElementById("volSlider");
-  const playBtn = document.getElementById("playBtn");
+const loginBtn = document.getElementById("loginBtn");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const message = document.getElementById("message");
 
-  // Iniciar en silencio 60%
-  volSlider.value = 0.6;
-  bgMusic.volume = 0.6;
+const errorSound = new Audio("Mechstrom.mp3"); // nombre correcto
+errorSound.volume = 0.7; // ajusta el volumen como prefieras
 
-  setTimeout(() => {
-    loading.style.display = "none";
-    intro.classList.remove("hidden");
-    bgMusic.play().catch(e => console.warn("Auto-play bloqueado", e));
-  }, 2500);
+loginBtn.addEventListener("mouseover", () => {
+  if (password.value === "" || password.value !== "1234") {
+    const x = Math.random() * 200 - 100;
+    const y = Math.random() * 200 - 100;
+    loginBtn.style.transform = `translate(${x}px, ${y}px)`;
+    errorSound.play();
+  }
+});
 
-  muteBtn.onclick = () => {
-    bgMusic.muted = !bgMusic.muted;
-    muteBtn.textContent = bgMusic.muted ? "🔇" : "🔊";
-  };
-
-  volSlider.oninput = () => {
-    bgMusic.volume = volSlider.value;
-    bgMusic.muted = false;
-    muteBtn.textContent = "🔊";
-  };
-
-  playBtn.onclick = () => {
-    window.location.href = "level1.html";
-  };
-};
+loginBtn.addEventListener("click", () => {
+  if (password.value === "1234") {
+    message.textContent = "¡Bienvenido, hacker!";
+    loginBtn.style.transform = "translate(0,0)";
+  } else {
+    message.textContent = "Contraseña incorrecta. 🤖";
+    errorSound.play();
+  }
+});
