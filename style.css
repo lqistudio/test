@@ -1,64 +1,21 @@
+/* ... (tu CSS existente) ... */
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #111;
-  color: #eee;
+.audio-controls {
+  margin-top: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
-  flex-direction: column;
-  text-align: center;
 }
 
-#loading {
-  font-size: 24px;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.hidden {
-  display: none;
-}
-
-.intro {
-  max-width: 600px;
-  padding: 20px;
-  line-height: 1.6;
-}
-
-.typing {
-  font-size: 16px;
-  color: #ccc;
-}
-
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 18px;
-  background: #4e00ff;
-  color: white;
+.audio-controls button {
+  font-size: 20px;
+  background: none;
   border: none;
-  border-radius: 8px;
+  color: #eee;
   cursor: pointer;
-  transition: all 0.3s ease;
+  margin-right: 10px;
 }
 
-button:hover {
-  background: #6f00ff;
-}
-
-.container input {
-  display: block;
-  margin: 10px auto;
-  padding: 10px;
-  width: 220px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
+.audio-controls input[type="range"] {
+  width: 150px;
 }
