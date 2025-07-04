@@ -23,6 +23,11 @@
     font-family: 'Oxanium', sans-serif;
     color: white;
     background: transparent;
+    user-select: none; /* bloquear selección en todo */
+  }
+
+  input, textarea {
+    user-select: text; /* permitir selección en inputs y textarea */
   }
 
   /* Fondo gradiente animado */
@@ -49,6 +54,28 @@
     background-size: cover;
     pointer-events: none;
     z-index: 50;
+  }
+
+  /* Botón salir fijo arriba derecha */
+  #exitBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: #bf00ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-family: 'Oxanium', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 0 12px #df40ff;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  #exitBtn:hover {
+    background: #df40ff;
+    box-shadow: 0 0 18px #ff80ff;
   }
 
   /* Contenedor login arriba de todo */
@@ -136,6 +163,8 @@
   <div id="backgroundGradient"></div>
   <div id="backgroundImage"></div>
 
+  <button id="exitBtn">Salir del juego</button>
+
   <main class="container">
     <h1>Nivel 1 - Inicia sesión... si puedes 😏</h1>
 
@@ -146,6 +175,15 @@
   </main>
 
 <script>
+  // Bloquear menú contextual (clic derecho)
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Botón salir
+  const exitBtn = document.getElementById('exitBtn');
+  exitBtn.addEventListener('click', () => {
+    window.location.href = 'index.html'; // Redirige al menú inicial
+  });
+
   const loginBtn = document.getElementById("loginBtn");
   const username = document.getElementById("username");
   const password = document.getElementById("password");
