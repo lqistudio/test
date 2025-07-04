@@ -3,16 +3,25 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const message = document.getElementById("message");
 
-const errorSound = new Audio("Mechstorm.mp3"); // nombre correcto
-errorSound.volume = 0.7; // ajusta el volumen como prefieras
+const audio = new Audio("Mechstorm.mp3");
+audio.loop = true;
+audio.volume = 0.7;
 
-loginBtn.addEventListener("mouseover", () => {
-  if (password.value === "" || password.value !== "1234") {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 200 - 100;
-    loginBtn.style.transform = `translate(${x}px, ${y}px)`;
-    errorSound.play();
+const playAudio = document.getElementById("playAudio");
+const volumeControl = document.getElementById("volumeControl");
+
+playAudio.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play();
+    playAudio.textContent = "⏸️";
+  } else {
+    audio.pause();
+    playAudio.textContent = "🔊";
   }
+});
+
+volumeControl.addEventListener("input", () => {
+  audio.volume = volumeControl.value;
 });
 
 loginBtn.addEventListener("click", () => {
