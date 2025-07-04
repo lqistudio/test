@@ -1,57 +1,226 @@
-/* style.css */
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Olvidé mi Contraseña - Menú Inicial</title>
+<style>
+  @font-face {
+    font-family: 'Oxanium';
+    src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
+  }
 
-/* Fuente general */
-@font-face {
-  font-family: 'Oxanium';
-  src: url('assets/fonts/Oxanium-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+  /* Reset y base */
+  * {
+    box-sizing: border-box;
+  }
 
-body {
-  margin: 0;
-  font-family: 'Oxanium', sans-serif;
-  color: white;
-  background: #000;
-  overflow: hidden;
-}
+  body {
+    margin: 0;
+    font-family: 'Oxanium', sans-serif;
+    color: white;
+    background: transparent; /* transparente para que se vea el fondo animado */
+    overflow: hidden;
+  }
 
-/* Botones globales */
-button.global-btn {
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  background-color: #8a00ff;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 0 10px #bf00ff;
-  transition: background-color 0.3s ease;
-  user-select: none;
-}
+  /* Fondo gradiente animado */
+  #backgroundGradient {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+    background-size: 600% 600%;
+    animation: gradientAnimation 15s ease infinite;
+    z-index: 0;
+  }
 
-button.global-btn:hover {
-  background-color: #af00ff;
-}
+  /* Imagen fija encima del gradiente */
+  #backgroundImage {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: url('assets/images/wall.png') no-repeat center center;
+    background-size: cover;
+    pointer-events: none;
+    z-index: 5;
+  }
 
-/* Botón salir, posición fija superior derecha */
-button#btnExitGame {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 10000;
-}
+  /* Contenedor principal intro */
+  .intro {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999; /* arriba del fondo */
+    background: rgba(15, 15, 15, 0.6); /* semi-transparente */
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #8a00ff;
+    max-width: 360px;
+    width: 90vw;
+    text-align: center;
+  }
 
-/* Menú inicial, pausa, etc. estilos comunes aquí */
-.menu-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  color: white;
-  font-size: 1.3rem;
-}
+  /* Texto dentro de intro */
+  .intro h2.instructions {
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin-bottom: 25px;
+    text-shadow: 0 0 10px #bf00ff;
+  }
+
+  /* Botones */
+  button.global-btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    background-color: #8a00ff;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 15px #bf00ff;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    user-select: none;
+  }
+
+  button.global-btn:hover {
+    background-color: #af00ff;
+    transform: scale(1.05);
+  }
+
+  /* Contenedor de botones */
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  /* Controles de audio */
+  .audio-controls {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .audio-controls button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #eee;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+
+  .audio-controls button:hover {
+    color: #af00ff;
+  }
+
+  .audio-controls input[type="range"] {
+    width: 150px;
+    cursor: pointer;
+  }
+
+  /* Animación fondo */
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Imagen para usuarios móviles */
+  #mobileWarning {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    object-fit: cover;
+    z-index: 10000;
+    background-color: #000;
+  }
+
+  @media (max-width: 768px) {
+    #mobileWarning {
+      display: block;
+    }
+
+    .intro {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="backgroundGradient"></div>
+  <div id="backgroundImage"></div>
+
+  <!-- Imagen para usuarios móviles -->
+  <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
+
+  <div class="intro" id="introText">
+    <h2 class="instructions">
+      El mundo digital colapsó...<br />
+      La única forma de restaurarlo: recuperar tu acceso.<br /><br />
+      Bienvenido a <strong>“Olvidé mi Contraseña”</strong>,<br />
+      un experimento de
+    </h2>
+
+    <div class="buttons-container">
+      <button id="playBtn" class="global-btn">🎮 PLAY</button>
+
+      <div class="audio-controls">
+        <button id="playAudio" title="Reproducir música">▶️</button>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop preload="auto" src="Mechstorm.mp3"></audio>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const warningImage = document.getElementById("mobileWarning");
+      const introText = document.getElementById("introText");
+
+      if (isMobile) {
+        warningImage.style.display = "block";
+        introText.style.display = "none";
+        return; // Para móviles, solo mostrar la imagen
+      }
+
+      const audio = document.getElementById('bgMusic');
+      const playAudio = document.getElementById('playAudio');
+      const volumeControl = document.getElementById('volumeControl');
+
+      audio.volume = volumeControl.value;
+
+      playAudio.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          playAudio.textContent = "⏸️";
+          playAudio.title = "Pausar música";
+        } else {
+          audio.pause();
+          playAudio.textContent = "▶️";
+          playAudio.title = "Reproducir música";
+        }
+      });
+
+      volumeControl.addEventListener('input', () => {
+        audio.volume = volumeControl.value;
+      });
+
+      document.getElementById('playBtn').addEventListener('click', () => {
+        sessionStorage.setItem('canPlayLevel1', 'true');
+        window.location.href = 'level1.html';
+      });
+    });
+  </script>
+</body>
+</html>
