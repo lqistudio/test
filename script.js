@@ -26,7 +26,7 @@ volumeControl.addEventListener("input", () => {
 
 loginBtn.addEventListener("click", () => {
   if (password.value === "1234") {
-    message.textContent = "¡Bienvenido, hacker!";
+    message.textContent = "¡Bienvenido, ##$%324@38!";
     loginBtn.style.transform = "translate(0,0)";
   } else {
     message.textContent = "Contraseña incorrecta. 🤖";
