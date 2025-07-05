@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Elementos principales
   const audio = document.getElementById("bgMusic");
   const playAudio = document.getElementById("playAudio");
   const volumeControl = document.getElementById("volumeControl");
@@ -7,84 +8,59 @@ document.addEventListener('DOMContentLoaded', () => {
   const levelContainer = document.getElementById("levelContainer");
   const errorSound = new Audio("assets/sfx/error.mp3");
 
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  if (isMobile) {
-    if (mobileWarning) mobileWarning.style.display = "block";
-    if (introText) introText.style.display = "none";
+  // Detección móvil
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    mobileWarning.style.display = "block";
+    introText.style.display = "none";
     return;
   }
 
-  function updateVolumeStyle(value) {
-    const percent = value * 100;
-    const color1 = value < 0.34 ? "#f00" : value < 0.67 ? "#ff0" : "#0f0";
-    if (volumeControl) {
-      volumeControl.style.background = `linear-gradient(90deg, ${color1} ${percent}%, #111 ${percent}%)`;
-    }
+  // Volumen dinámico
+  function updateVolumeStyle(v) {
+    const pct = v * 100;
+    const c = v < .34 ? "#f00" : v < .67 ? "#ff0" : "#0f0";
+    volumeControl.style.background = `linear-gradient(90deg, ${c} ${pct}%, #111 ${pct}%)`;
   }
 
   if (audio && volumeControl) {
-    audio.volume = parseFloat(volumeControl.value);
+    audio.volume = +volumeControl.value;
     updateVolumeStyle(audio.volume);
+    volumeControl.oninput = () => {
+      audio.volume = +volumeControl.value;
+      updateVolumeStyle(audio.volume);
+    };
   }
+  playAudio?.addEventListener("click", () => {
+    if (audio.paused) { audio.play(); playAudio.textContent = "⏸️"; }
+    else { audio.pause(); playAudio.textContent = "▶️"; }
+  });
 
-  if (playAudio && audio) {
-    playAudio.addEventListener("click", () => {
-      if (audio.paused) {
-        audio.play();
-        playAudio.textContent = "⏸️";
-        playAudio.title = "Pausar música";
-      } else {
-        audio.pause();
-        playAudio.textContent = "▶️";
-        playAudio.title = "Reproducir música";
-      }
-    });
-  }
-
-  if (volumeControl && audio) {
-    volumeControl.addEventListener("input", () => {
-      const val = parseFloat(volumeControl.value);
-      audio.volume = val;
-      updateVolumeStyle(val);
-    });
-  }
-
-  // ✅ NUEVO: Cargar cualquier nivel
-  function loadLevel(n) {
-    const basePath = `levels/level${n}/`;
-    const htmlUrl = `${basePath}level${n}-content.html`;
-    const scriptUrl = `${basePath}level${n}.js`;
-    const cssUrl = `${basePath}level${n}.css`;
-    const initFunction = `initLevel${n}`;
-
-    fetch(htmlUrl)
-      .then(res => res.ok ? res.text() : Promise.reject("Nivel no encontrado"))
+  // Cargar nivel dinámico
+  function loadLevel(n, htm, jsfile, cssfile) {
+    fetch(htm)
+      .then(r => r.ok ? r.text() : Promise.reject("Nivel no encontrado"))
       .then(html => {
         levelContainer.innerHTML = html;
         levelContainer.className = `level${n}`;
-        levelContainer.style.display = "flex";
         introText.style.display = "none";
+        levelContainer.style.display = "flex";
 
-        if (!document.getElementById(`level${n}CSS`)) {
-          const link = document.createElement('link');
+        // Carga CSS del nivel
+        if (!document.getElementById(`css-level${n}`)) {
+          const link = document.createElement("link");
           link.rel = "stylesheet";
-          link.href = cssUrl;
-          link.id = `level${n}CSS`;
+          link.href = cssfile;
+          link.id = `css-level${n}`;
           document.head.appendChild(link);
         }
 
-        const existingScript = document.getElementById('levelScript');
-        if (existingScript) existingScript.remove();
-
-        const script = document.createElement("script");
-        script.src = scriptUrl;
-        script.id = "levelScript";
-        script.onload = () => {
-          if (typeof window[initFunction] === "function") {
-            window[initFunction]();
-          }
-        };
-        document.body.appendChild(script);
+        // Carga JS del nivel
+        const prev = document.getElementById("js-level");
+        prev?.remove();
+        const s = document.createElement("script");
+        s.id = "js-level";
+        s.src = jsfile;
+        document.body.appendChild(s);
       })
       .catch(err => {
         alert(err);
@@ -93,14 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // ▶️ Botón de JUGAR carga el nivel 1
-  const playBtn = document.getElementById("playBtn");
-  if (playBtn) {
-    playBtn.addEventListener("click", () => loadLevel(1));
-  }
+  // Ejemplo: cargar nivel 1
+  document.getElementById("playBtn")?.addEventListener("click", () => {
+    loadLevel(
+      1,
+      "levels/level1-content.html",
+      "js/level1.js",
+      "css/level1.css"
+    );
+  });
 
-  // Protección básica
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('selectstart', e => e.preventDefault());
-  document.addEventListener('dragstart', e => e.preventDefault());
+  // Protecciones de interfaz
+  ["contextmenu","selectstart","dragstart"].forEach(e => 
+    document.addEventListener(e, ev => ev.preventDefault())
+  );
 });
