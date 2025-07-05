@@ -16,16 +16,19 @@ function initLevel1() {
       msg.textContent = "✅ Acceso concedido. ¡Nivel completado!";
       msg.style.color = "#0f0";
 
+      // Esperamos un poco y luego pasamos a la pantalla de logro (game.html)
       setTimeout(() => {
-        // Aquí cargas el game.html (pantalla de éxito)
-        loadLevel(
-          0,
-          "game/game.html",
-          "game/game.js",
-          "game/game.css"
-        );
+        if (typeof loadLevel === "function") {
+          loadLevel(
+            0,
+            "game/game.html",
+            "game/game.js",
+            "game/game.css"
+          );
+        } else {
+          console.error("No se puede cargar game.html: función loadLevel no disponible.");
+        }
       }, 1500);
-
     } else if (username !== validUser) {
       msg.textContent = "⚠️ La contraseña del Nivel 3 es: alma404";
       msg.style.color = "#ff0";
@@ -35,13 +38,13 @@ function initLevel1() {
     }
   });
 
-  // Botón salir (siempre funciona)
+  // Botón salir (funciona siempre)
   if (exitBtn) {
     exitBtn.addEventListener("click", () => {
       if (typeof showIntro === "function") {
         showIntro();
       } else {
-        alert("No se pudo volver al menú.");
+        window.location.reload(); // fallback si showIntro no está disponible
       }
     });
   }
