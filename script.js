@@ -69,7 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mostrar contenido del nivel
         levelContainer.innerHTML = html;
         introText.style.display = "none";
-        levelContainer.style.display = "block";
+        levelContainer.style.display = "flex"; // mejor que block para centrado
+
+        // Cargar CSS si no está cargado aún (opcional, si tienes CSS separado)
+        if (!document.getElementById('level1CSS')) {
+          const link = document.createElement('link');
+          link.rel = "stylesheet";
+          link.href = "level1.css";
+          link.id = "level1CSS";
+          document.head.appendChild(link);
+        }
 
         // Cargar script del nivel
         if (scriptUrl) {
