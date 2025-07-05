@@ -6,19 +6,17 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Video de fondo con transparencia, encima del gradiente */
+    /* Video de fondo */
     #backgroundVideo {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      z-index: 25; /* Mayor que el gradiente, menor que el contenido */
+      z-index: 25;
       pointer-events: none;
       background: transparent;
     }
-
-    /* Fondo gradiente animado (está en style.css pero por si acaso) */
     #backgroundGradient {
       position: fixed;
       top: 0; left: 0;
@@ -28,7 +26,6 @@
       animation: gradientAnimation 15s ease infinite;
       z-index: 0;
     }
-
     #mobileWarning {
       display: none;
       position: fixed;
@@ -48,36 +45,105 @@
       justify-content: center;
       align-items: center;
     }
+
+    /* Contenedor principal con botones centrados */
+    .intro {
+      position: relative;
+      z-index: 9999;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      padding: 20px;
+    }
+
+    /* Botón PLAY grande */
+    button#playBtn {
+      font-size: 36px;
+      padding: 20px 60px;
+      background-color: #4e00ff;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+      font-family: 'Oxanium', sans-serif;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 0 0 10px #6f00ff;
+    }
+    button#playBtn:hover {
+      background-color: #6f00ff;
+      transform: scale(1.05);
+    }
+
+    /* Botón INSTRUCCIONES */
+    button#instructionsBtn {
+      font-size: 24px;
+      padding: 15px 40px;
+      background-color: #00bfff;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-family: 'Oxanium', sans-serif;
+      box-shadow: 0 0 10px #00d4ff;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+    button#instructionsBtn:hover {
+      background-color: #00d4ff;
+      transform: scale(1.05);
+    }
+
+    /* Controles de audio */
+    .audio-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .audio-controls button {
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: #eee;
+      cursor: pointer;
+    }
+
+    .audio-controls input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 180px;
+      height: 10px;
+      background: linear-gradient(90deg, #0ff 0%, #0f0 100%);
+      border-radius: 5px;
+      box-shadow: 0 0 5px #0ff, 0 0 10px #0f0;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
   </style>
 </head>
 <body>
-  <!-- Gradiente de fondo -->
   <div id="backgroundGradient"></div>
 
-  <!-- Video con transparencia encima del gradiente -->
   <video id="backgroundVideo" autoplay muted loop playsinline>
     <source src="assets/video/LQISTUDIO.webm" type="video/webm" />
     Tu navegador no soporta video en formato .webm.
   </video>
 
-  <!-- Imagen para móviles -->
   <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
 
   <div class="intro" id="introText">
-    <div class="text-container">
-      <h2 class="instructions">
-        El mundo digital colapsó...<br/>
-        La única forma de restaurarlo: recuperar tu acceso.<br/><br/>
-        Bienvenido a <strong>“Olvidé mi Contraseña”</strong>,<br/>
-        un experimento de
-      </h2>
-    </div>
-    <div class="buttons-container">
-      <button id="playBtn">🎮 PLAY</button>
-      <div class="audio-controls">
-        <button id="playAudio" title="Reproducir música">▶️</button>
-        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
-      </div>
+    <button id="playBtn">🎮 PLAY</button>
+    <button id="instructionsBtn">📖 INSTRUCCIONES</button>
+
+    <div class="audio-controls">
+      <button id="playAudio" title="Reproducir música">▶️</button>
+      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.7" />
     </div>
   </div>
 
