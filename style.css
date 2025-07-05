@@ -81,7 +81,7 @@ body {
   align-items: center;
   gap: 50px;
   padding: 20px;
-  padding-bottom: 100px;
+  padding-bottom: 160px; /* ← antes 100px */
 }
 
 /* Botón JUGAR (más grande, glitch incluido) */
@@ -89,7 +89,7 @@ button#playBtn {
   position: relative;
   font-size: 36px;
   padding: 20px 60px;
-  background-color: #4e00ff;
+  background-color: rgba(78, 0, 255, 0.7); /* ← antes era sólido, ahora semitransparente */
   border: none;
   border-radius: 10px;
   color: white;
@@ -98,7 +98,7 @@ button#playBtn {
   font-family: 'Oxanium', sans-serif;
   overflow: hidden;
   z-index: 1;
-  box-shadow: 0 0 10px #6f00ff;
+  box-shadow: 0 0 15px rgba(111, 0, 255, 0.6); /* sombra más suave y difusa */
 }
 
 button#playBtn::after {
