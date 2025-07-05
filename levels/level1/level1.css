@@ -39,6 +39,25 @@
 .level1 button:hover {
   background: #0ff;
 }
+.exit-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff0055;
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff0055, 0 0 20px #ff00aa;
+  z-index: 9999;
+  transition: transform 0.2s;
+}
+.exit-button:hover {
+  transform: scale(1.1);
+  background-color: #ff3377;
+}
 
 .level1 .message {
   margin-top: 15px;
