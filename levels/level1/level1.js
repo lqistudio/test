@@ -60,9 +60,11 @@ function initLevel1() {
       const intro = document.getElementById("introText");
       const container = document.getElementById("levelContainer");
 
-      intro.style.display = "block";
-      container.innerHTML = "";
+      // Restaurar correctamente el layout del menú
+      intro.style.display = "flex"; // ← usa 'flex' para restaurar el diseño
       container.style.display = "none";
+      container.innerHTML = "";
+      container.className = "";
     });
   }
 }
