@@ -7,8 +7,15 @@ function initLevel1() {
 
   let accessGranted = false;
 
+  if (!loginBtn || !username || !password || !message) {
+    console.error("Elementos del nivel 1 no encontrados en el DOM");
+    return;
+  }
+
+  // Efecto botón que se mueve cuando no se ha ingresado la clave o es incorrecta
   loginBtn.addEventListener("mouseover", () => {
     if (accessGranted) return;
+
     if (password.value === "" || password.value !== "1234") {
       const maxMove = 120;
       const x = Math.random() * maxMove * 2 - maxMove;
@@ -21,13 +28,18 @@ function initLevel1() {
       message.style.color = "#ff0055";
       message.style.textShadow = "0 0 8px #ff0055";
 
-      message.animate([{ opacity: 1 }, { opacity: 0.3 }, { opacity: 1 }], {
-        duration: 300,
-        iterations: 2
-      });
+      message.animate(
+        [
+          { opacity: 1 },
+          { opacity: 0.3 },
+          { opacity: 1 }
+        ],
+        { duration: 300, iterations: 2 }
+      );
     }
   });
 
+  // Validar contraseña al hacer click
   loginBtn.addEventListener("click", () => {
     if (password.value === "1234") {
       accessGranted = true;
@@ -44,17 +56,10 @@ function initLevel1() {
     }
   });
 
+  // Botón salir para volver al menú principal (redirige a index.html)
   if (exitBtn) {
     exitBtn.addEventListener("click", () => {
-      const introText = document.getElementById("introText");
-      const levelContainer = document.getElementById("levelContainer");
-      if (introText && levelContainer) {
-        levelContainer.innerHTML = "";
-        levelContainer.style.display = "none";
-        levelContainer.classList.remove("level1");
-        document.body.classList.remove("level1");
-        introText.style.display = "block";
-      }
+      window.location.href = "index.html";
     });
   }
 }
