@@ -6,11 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileWarning = document.getElementById("mobileWarning");
   const introText = document.getElementById("introText");
   const levelContainer = document.getElementById("levelContainer");
-  
-  // Sonido de error para login (asegúrate que exista este archivo)
+
   const errorSound = new Audio("assets/sfx/error.mp3");
 
-  // Detectar si es celular
+  // Detectar si es móvil
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if (isMobile) {
     if (mobileWarning) mobileWarning.style.display = "block";
@@ -18,22 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Función para actualizar el estilo dinámico del volumen
+  // Volumen visual
   function updateVolumeStyle(value) {
     const percent = value * 100;
     const color1 = value < 0.34 ? "#f00" : value < 0.67 ? "#ff0" : "#0f0";
-    if(volumeControl) {
+    if (volumeControl) {
       volumeControl.style.background = `linear-gradient(90deg, ${color1} ${percent}%, #111 ${percent}%)`;
     }
   }
 
-  // Configurar audio y volumen
   if (audio && volumeControl) {
     audio.volume = parseFloat(volumeControl.value);
     updateVolumeStyle(audio.volume);
   }
 
-  // Botón de reproducir/pausar música
   if (playAudio && audio) {
     playAudio.addEventListener("click", () => {
       if (audio.paused) {
@@ -48,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Control dinámico del volumen
   if (volumeControl && audio) {
     volumeControl.addEventListener("input", () => {
       const val = parseFloat(volumeControl.value);
@@ -57,27 +53,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Función para cargar un nivel dentro del div levelContainer, con script externo
+  // Cargar nivel (HTML + Script + Clase CSS)
   function loadLevel(htmlUrl, scriptUrl) {
     fetch(htmlUrl)
-      .then(response => {
-        if (!response.ok) throw new Error("Error al cargar nivel");
-        return response.text();
+      .then(res => {
+        if (!res.ok) throw new Error("Error al cargar nivel");
+        return res.text();
       })
       .then(html => {
+        // Limpiar contenedor y mostrar
+        levelContainer.innerHTML = "";
+        levelContainer.className = ""; // Limpiar clases previas
+        levelContainer.classList.add("level1"); // Aplicar clase de nivel
+
+        // Mostrar contenido del nivel
+        levelContainer.innerHTML = html;
         introText.style.display = "none";
         levelContainer.style.display = "block";
-        levelContainer.innerHTML = html;
 
-        // Cargar el script externo del nivel
+        // Cargar script del nivel
         if (scriptUrl) {
-          // Eliminar script previo si existe
           const prevScript = document.getElementById('levelScript');
           if (prevScript) prevScript.remove();
 
-          const script = document.createElement('script');
+          const script = document.createElement("script");
           script.src = scriptUrl;
-          script.id = 'levelScript';
+          script.id = "levelScript";
+          script.onload = () => {
+            if (typeof initLevel1 === "function") {
+              initLevel1(); // Ejecutar función principal del nivel
+            }
+          };
           document.body.appendChild(script);
         }
       })
@@ -86,10 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
         introText.style.display = "block";
         levelContainer.style.display = "none";
         levelContainer.innerHTML = "";
+        levelContainer.className = "";
       });
   }
 
-  // Botón play que carga el nivel 1 dinámicamente (contenido y script)
+  // Botón que lanza el primer nivel
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
     playBtn.addEventListener("click", () => {
@@ -97,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Protecciones para evitar copiar, menú derecho, selección y arrastrar
+  // Proteger contenido
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.addEventListener('selectstart', e => e.preventDefault());
   document.addEventListener('dragstart', e => e.preventDefault());
