@@ -78,22 +78,28 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         alert(err.message);
-        introText.style.display = "block";
-        levelContainer.style.display = "none";
+        showIntro(); // usa la función que ahora limpia y muestra bien
       });
   }
 
-  // Función para mostrar menú inicial
+  // Función para mostrar menú inicial correctamente
   function showIntro() {
-    introText.style.display = "block";
+    introText.style.display = "flex"; // muy importante para mantener el flex
     levelContainer.style.display = "none";
     levelContainer.innerHTML = "";
     levelContainer.className = "";
   }
 
+  // Función para salir del nivel y volver al menú (por si quieres botón salir)
+  function exitLevel() {
+    // Aquí podrías parar scripts o sonidos si es necesario
+    showIntro();
+  }
+
   // Exponer funciones globalmente para game.js y otros
   window.loadLevel = loadLevel;
   window.showIntro = showIntro;
+  window.exitLevel = exitLevel;
 
   // Botón PLAY → Nivel 1
   const playBtn = document.getElementById("playBtn");
