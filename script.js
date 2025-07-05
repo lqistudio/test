@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("playBtn")?.addEventListener("click", () => {
     loadLevel(
       1,
-      "levels/level1-content.html",
+      "levels/levels1/level1-content.html",
       "js/level1.js",
       "css/level1.css"
     );
