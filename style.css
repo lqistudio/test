@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Oxanium';
-  src: url('/test/assets/fonts/oxanium.ttf') format('truetype');
+  src: url('assets/fonts/oxanium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -39,7 +39,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('/test/assets/images/wall.png') no-repeat center center;
+  background: url('assets/images/wall.png') no-repeat center center;
   background-size: cover;
   pointer-events: none;
   z-index: 50;
