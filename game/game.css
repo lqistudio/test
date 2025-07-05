@@ -1,1 +1,38 @@
+.game-screen-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 30px;
+  background: rgba(20, 20, 20, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 0 20px #8a00ff;
+  user-select: none;
+  color: #eee;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.game-screen-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 8px #8a00ff;
+}
+
+.game-screen-container button {
+  background-color: #8a00ff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px 24px;
+  margin: 0 10px 15px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 8px #8a00ff;
+}
+
+.game-screen-container button:hover {
+  background-color: #b14dff;
+}
 
