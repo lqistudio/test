@@ -1,1 +1,50 @@
+.level1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.level1 .container {
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #0ff;
+  text-align: center;
+  color: #fff;
+  font-family: 'Oxanium', sans-serif;
+}
+
+.level1 input {
+  padding: 10px;
+  margin-top: 15px;
+  width: 200px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.level1 button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #00ffff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.level1 button:hover {
+  transform: scale(1.05);
+  background-color: #0ff;
+}
+
+.level1 .error {
+  margin-top: 10px;
+  color: #f55;
+  font-weight: bold;
+}
 
