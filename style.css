@@ -27,7 +27,7 @@ body {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  z-index: -3;
+  z-index: 25;  /* debe ir arriba del gradiente */
   pointer-events: none;
 }
 
@@ -41,7 +41,7 @@ body {
   background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
   background-size: 600% 600%;
   animation: gradientAnimation 15s ease infinite;
-  z-index: -2;
+  z-index: 0; /* debajo del video */
 }
 
 /* (OPCIONAL) Imagen wall desactivada */
@@ -79,8 +79,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 50px; /* un poco más de espacio entre botones */
   padding: 20px;
+  padding-bottom: 100px; /* baja los botones un poco */
 }
 
 /* Botón JUGAR (más grande, glitch incluido) */
