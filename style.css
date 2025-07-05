@@ -81,7 +81,7 @@ body {
   align-items: center;
   gap: 50px;
   padding: 20px;
-  padding-bottom: 200px; /* ← antes 100px */
+  padding-bottom: 300px; /* ← antes 100px */
 }
 
 /* Botón JUGAR (más grande, glitch incluido) */
