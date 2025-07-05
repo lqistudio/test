@@ -79,9 +79,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 50px; /* un poco más de espacio entre botones */
+  gap: 50px;
   padding: 20px;
-  padding-bottom: 100px; /* baja los botones un poco */
+  padding-bottom: 100px;
 }
 
 /* Botón JUGAR (más grande, glitch incluido) */
