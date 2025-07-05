@@ -1,7 +1,12 @@
 <div class="container">
-  <h2>🔐 Nivel 1</h2>
-  <p>Escribe la contraseña correcta:</p>
-  <input type="text" id="passwordInput" placeholder="Contraseña..." />
-  <button onclick="checkPassword()">Aceptar</button>
-  <p id="feedback"></p>
+  <h2>🔐 Nivel 1: Iniciar sesión</h2>
+  <p>Introduce el usuario y la contraseña correcta para continuar.</p>
+
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Usuario" required />
+    <input type="password" id="password" placeholder="Contraseña" required />
+    <button type="submit">Acceder</button>
+  </form>
+
+  <p id="levelMessage" class="message"></p>
 </div>
