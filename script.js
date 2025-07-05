@@ -5,15 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileWarning = document.getElementById("mobileWarning");
   const introText = document.getElementById("introText");
   const levelContainer = document.getElementById("levelContainer");
+  const errorSound = new Audio("assets/sfx/error.mp3");
 
-  const levels = Array.from({ length: 10 }, (_, i) => ({
-    html: `levels/level${i + 1}/level${i + 1}-content.html`,
-    js: `levels/level${i + 1}/level${i + 1}.js`,
-    css: `levels/level${i + 1}/level${i + 1}.css`,
-    init: `initLevel${i + 1}`
-  }));
-
-  let currentLevel = 0;
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    if (mobileWarning) mobileWarning.style.display = "block";
+    if (introText) introText.style.display = "none";
+    return;
+  }
 
   function updateVolumeStyle(value) {
     const percent = value * 100;
@@ -50,57 +49,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function loadLevelByIndex(index) {
-    const level = levels[index];
-    if (!level) {
-      alert("🏁 ¡Completaste todos los niveles!");
-      return;
-    }
+  // ✅ NUEVO: Cargar cualquier nivel
+  function loadLevel(n) {
+    const basePath = `levels/level${n}/`;
+    const htmlUrl = `${basePath}level${n}-content.html`;
+    const scriptUrl = `${basePath}level${n}.js`;
+    const cssUrl = `${basePath}level${n}.css`;
+    const initFunction = `initLevel${n}`;
 
-    fetch(level.html)
-      .then(res => res.text())
+    fetch(htmlUrl)
+      .then(res => res.ok ? res.text() : Promise.reject("Nivel no encontrado"))
       .then(html => {
         levelContainer.innerHTML = html;
+        levelContainer.className = `level${n}`;
         levelContainer.style.display = "flex";
         introText.style.display = "none";
 
-        const oldCss = document.getElementById("levelCSS");
-        if (oldCss) oldCss.remove();
+        if (!document.getElementById(`level${n}CSS`)) {
+          const link = document.createElement('link');
+          link.rel = "stylesheet";
+          link.href = cssUrl;
+          link.id = `level${n}CSS`;
+          document.head.appendChild(link);
+        }
 
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = level.css;
-        link.id = "levelCSS";
-        document.head.appendChild(link);
-
-        const prevScript = document.getElementById("levelScript");
-        if (prevScript) prevScript.remove();
+        const existingScript = document.getElementById('levelScript');
+        if (existingScript) existingScript.remove();
 
         const script = document.createElement("script");
-        script.src = level.js;
+        script.src = scriptUrl;
         script.id = "levelScript";
         script.onload = () => {
-          if (typeof window[level.init] === "function") {
-            window[level.init]();
+          if (typeof window[initFunction] === "function") {
+            window[initFunction]();
           }
         };
         document.body.appendChild(script);
+      })
+      .catch(err => {
+        alert(err);
+        introText.style.display = "block";
+        levelContainer.style.display = "none";
       });
   }
 
-  window.nextLevel = function () {
-    currentLevel++;
-    loadLevelByIndex(currentLevel);
-  };
-
+  // ▶️ Botón de JUGAR carga el nivel 1
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
-    playBtn.addEventListener("click", () => {
-      currentLevel = 0;
-      loadLevelByIndex(currentLevel);
-    });
+    playBtn.addEventListener("click", () => loadLevel(1));
   }
 
+  // Protección básica
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.addEventListener('selectstart', e => e.preventDefault());
   document.addEventListener('dragstart', e => e.preventDefault());
