@@ -83,6 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  // Función para mostrar menú inicial
+  function showIntro() {
+    introText.style.display = "block";
+    levelContainer.style.display = "none";
+    levelContainer.innerHTML = "";
+    levelContainer.className = "";
+  }
+
+  // Exponer funciones globalmente para game.js y otros
+  window.loadLevel = loadLevel;
+  window.showIntro = showIntro;
+
   // Botón PLAY → Nivel 1
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
