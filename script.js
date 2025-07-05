@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Elementos comunes
   const audio = document.getElementById("bgMusic");
   const playAudio = document.getElementById("playAudio");
   const volumeControl = document.getElementById("volumeControl");
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const errorSound = new Audio("assets/sfx/error.mp3");
 
-  // Detectar móvil
+  // Detectar si es móvil
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if (isMobile) {
     if (mobileWarning) mobileWarning.style.display = "block";
@@ -16,21 +17,30 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Actualizar estilo del volumen
+  // Forzar estado inicial: mostrar menú, ocultar nivel y limpiar contenedor
+  if (introText && levelContainer) {
+    introText.style.display = "block";
+    levelContainer.style.display = "none";
+    levelContainer.innerHTML = "";
+    levelContainer.className = "";
+  }
+
+  // Función para actualizar el estilo dinámico del volumen
   function updateVolumeStyle(value) {
     const percent = value * 100;
-    const color = value < 0.34 ? "#f00" : value < 0.67 ? "#ff0" : "#0f0";
+    const color1 = value < 0.34 ? "#f00" : value < 0.67 ? "#ff0" : "#0f0";
     if (volumeControl) {
-      volumeControl.style.background = `linear-gradient(90deg, ${color} ${percent}%, #111 ${percent}%)`;
+      volumeControl.style.background = `linear-gradient(90deg, ${color1} ${percent}%, #111 ${percent}%)`;
     }
   }
 
-  // Configurar audio y controles
+  // Configurar audio y volumen inicial
   if (audio && volumeControl) {
     audio.volume = parseFloat(volumeControl.value);
     updateVolumeStyle(audio.volume);
   }
 
+  // Botón reproducir/pausar música
   if (playAudio && audio) {
     playAudio.addEventListener("click", () => {
       if (audio.paused) {
@@ -45,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Control dinámico del volumen
   if (volumeControl && audio) {
     volumeControl.addEventListener("input", () => {
       const val = parseFloat(volumeControl.value);
@@ -53,43 +64,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cargar un nivel HTML + JS + CSS
-  function loadLevel(htmlUrl, scriptUrl, cssUrl, cssId = "levelCSS") {
+  // Función para cargar un nivel (HTML + script + clase CSS)
+  function loadLevel(htmlUrl, scriptUrl) {
     fetch(htmlUrl)
       .then(res => {
         if (!res.ok) throw new Error("Error al cargar nivel");
         return res.text();
       })
       .then(html => {
+        // Limpiar contenedor y mostrar
         levelContainer.innerHTML = "";
-        levelContainer.className = ""; // limpiar clases
-        levelContainer.classList.add("level1"); // aplicar clase si se desea
+        levelContainer.className = ""; // Limpiar clases previas
+        levelContainer.classList.add("level1"); // Aplicar clase de nivel
 
-        // Mostrar contenido
+        // Mostrar contenido del nivel
         levelContainer.innerHTML = html;
         introText.style.display = "none";
-        levelContainer.style.display = "flex";
+        levelContainer.style.display = "flex"; // flex para centrar contenido
 
-        // Inyectar CSS solo si no está cargado
-        if (cssUrl && !document.getElementById(cssId)) {
-          const link = document.createElement("link");
+        // Cargar CSS level1 si no está cargado aún
+        if (!document.getElementById('level1CSS')) {
+          const link = document.createElement('link');
           link.rel = "stylesheet";
-          link.href = cssUrl;
-          link.id = cssId;
+          link.href = "level1.css";
+          link.id = "level1CSS";
           document.head.appendChild(link);
         }
 
-        // Eliminar script anterior si existe
-        const oldScript = document.getElementById("levelScript");
-        if (oldScript) oldScript.remove();
-
-        // Cargar script JS del nivel
+        // Cargar script externo del nivel
         if (scriptUrl) {
+          const prevScript = document.getElementById('levelScript');
+          if (prevScript) prevScript.remove();
+
           const script = document.createElement("script");
           script.src = scriptUrl;
           script.id = "levelScript";
           script.onload = () => {
-            if (typeof initLevel1 === "function") initLevel1();
+            if (typeof initLevel1 === "function") {
+              initLevel1(); // Ejecutar función principal del nivel
+            }
           };
           document.body.appendChild(script);
         }
@@ -103,16 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Botón para cargar nivel 1
+  // Botón que lanza el primer nivel
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
     playBtn.addEventListener("click", () => {
-      loadLevel("level1-content.html", "level1.js", "level1.css");
+      loadLevel("level1-content.html", "level1.js");
     });
   }
 
-  // Evitar copiar y clic derecho
-  document.addEventListener("contextmenu", e => e.preventDefault());
-  document.addEventListener("selectstart", e => e.preventDefault());
-  document.addEventListener("dragstart", e => e.preventDefault());
+  // Proteger contenido: evitar copiar, seleccionar, menú derecho, arrastrar
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
 });
