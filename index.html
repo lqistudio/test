@@ -57,6 +57,7 @@
       align-items: center;
       gap: 30px;
       padding: 20px;
+      padding-bottom: 80px; /* Baja un poco más los botones */
     }
 
     /* Botón PLAY grande */
@@ -130,7 +131,7 @@
 <body>
   <div id="backgroundGradient"></div>
 
-  <video id="backgroundVideo" autoplay muted loop playsinline>
+  <video id="backgroundVideo" autoplay muted loop playsinline disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback">
     <source src="assets/video/LQISTUDIO.webm" type="video/webm" />
     Tu navegador no soporta video en formato .webm.
   </video>
@@ -150,6 +151,16 @@
   <div id="levelContainer"></div>
 
   <audio id="bgMusic" loop preload="auto" src="Mechstorm.mp3"></audio>
+
+  <script>
+    // Bloquear evento PiP en video
+    const video = document.getElementById('backgroundVideo');
+    video.addEventListener('enterpictureinpicture', e => {
+      e.preventDefault();
+      video.pause(); // Opcional, para forzar pausa si intentan PiP
+      alert("Picture-in-Picture está deshabilitado en este video.");
+    });
+  </script>
 
   <script src="script.js"></script>
 </body>
