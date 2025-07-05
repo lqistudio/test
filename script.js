@@ -10,15 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Detección móvil
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    mobileWarning.style.display = "block";
-    introText.style.display = "none";
+    if (mobileWarning) mobileWarning.style.display = "block";
+    if (introText) introText.style.display = "none";
     return;
   }
 
   // Volumen dinámico
   function updateVolumeStyle(v) {
     const pct = v * 100;
-    const c = v < .34 ? "#f00" : v < .67 ? "#ff0" : "#0f0";
+    const c = v < 0.34 ? "#f00" : v < 0.67 ? "#ff0" : "#0f0";
     volumeControl.style.background = `linear-gradient(90deg, ${c} ${pct}%, #111 ${pct}%)`;
   }
 
@@ -30,15 +30,28 @@ document.addEventListener('DOMContentLoaded', () => {
       updateVolumeStyle(audio.volume);
     };
   }
-  playAudio?.addEventListener("click", () => {
-    if (audio.paused) { audio.play(); playAudio.textContent = "⏸️"; }
-    else { audio.pause(); playAudio.textContent = "▶️"; }
-  });
 
-  // Cargar nivel dinámico
+  if (playAudio && audio) {
+    playAudio.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playAudio.textContent = "⏸️";
+        playAudio.title = "Pausar música";
+      } else {
+        audio.pause();
+        playAudio.textContent = "▶️";
+        playAudio.title = "Reproducir música";
+      }
+    });
+  }
+
+  // Función para cargar niveles
   function loadLevel(n, htm, jsfile, cssfile) {
     fetch(htm)
-      .then(r => r.ok ? r.text() : Promise.reject("Nivel no encontrado"))
+      .then(r => {
+        if (!r.ok) throw new Error("Nivel no encontrado");
+        return r.text();
+      })
       .then(html => {
         levelContainer.innerHTML = html;
         levelContainer.className = `level${n}`;
@@ -55,32 +68,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Carga JS del nivel
-        const prev = document.getElementById("js-level");
-        prev?.remove();
-        const s = document.createElement("script");
-        s.id = "js-level";
-        s.src = jsfile;
-        document.body.appendChild(s);
+        const prevScript = document.getElementById("js-level");
+        if (prevScript) prevScript.remove();
+
+        const script = document.createElement("script");
+        script.id = "js-level";
+        script.src = jsfile;
+        document.body.appendChild(script);
       })
       .catch(err => {
-        alert(err);
+        alert(err.message);
         introText.style.display = "block";
         levelContainer.style.display = "none";
       });
   }
 
-  // Ejemplo: cargar nivel 1
-  document.getElementById("playBtn")?.addEventListener("click", () => {
-    loadLevel(
-      1,
-      "levels/levels1/level1-content.html",
-      "js/level1.js",
-      "css/level1.css"
-    );
-  });
+  // Botón PLAY → Nivel 1
+  const playBtn = document.getElementById("playBtn");
+  if (playBtn) {
+    playBtn.addEventListener("click", () => {
+      loadLevel(
+        1,
+        "levels/level1/level1-content.html",
+        "levels/level1/level1.js",
+        "levels/level1/level1.css"
+      );
+    });
+  }
 
-  // Protecciones de interfaz
-  ["contextmenu","selectstart","dragstart"].forEach(e => 
-    document.addEventListener(e, ev => ev.preventDefault())
+  // Proteger la interfaz
+  ["contextmenu", "selectstart", "dragstart"].forEach(eventType =>
+    document.addEventListener(eventType, ev => ev.preventDefault())
   );
 });
