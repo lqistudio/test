@@ -3,18 +3,28 @@ function initLevel1() {
   const msg = document.getElementById('levelMessage');
   const exitBtn = document.getElementById('exitBtn');
 
+  const validUser = "admin";
+  const validPass = "contraseña123";
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    const validUser = "admin";
-    const validPass = "contraseña123";
-
     if (username === validUser && password === validPass) {
-      // Redirigir a game.html y pasar nivel actual por query param
-      window.location.href = "game.html?level=1";
+      msg.textContent = "✅ Acceso concedido. ¡Nivel completado!";
+      msg.style.color = "#0f0";
+
+      setTimeout(() => {
+        // Aquí cargas el game.html (pantalla de éxito)
+        loadLevel(
+          0,
+          "game/game.html",
+          "game/game.js",
+          "game/game.css"
+        );
+      }, 1500);
 
     } else if (username !== validUser) {
       msg.textContent = "⚠️ La contraseña del Nivel 3 es: alma404";
@@ -25,21 +35,14 @@ function initLevel1() {
     }
   });
 
-  exitBtn?.addEventListener('click', () => {
-    const levelContainer = document.getElementById('levelContainer');
-    const introText = document.getElementById('introText');
-    
-    levelContainer.innerHTML = "";
-    levelContainer.style.display = "none";
-    introText.style.display = "block";
-
-    msg.textContent = "";
-    form.reset();
-
-    const levelScript = document.getElementById('js-level');
-    levelScript?.remove();
-
-    const cssLevel = document.getElementById('css-level1');
-    cssLevel?.remove();
-  });
+  // Botón salir (siempre funciona)
+  if (exitBtn) {
+    exitBtn.addEventListener("click", () => {
+      if (typeof showIntro === "function") {
+        showIntro();
+      } else {
+        alert("No se pudo volver al menú.");
+      }
+    });
+  }
 }
