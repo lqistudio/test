@@ -40,7 +40,7 @@
   background: #0ff;
 }
 .exit-button {
-  position: absolute;
+  position: fixed; /* <- antes era absolute */
   top: 20px;
   right: 20px;
   background-color: #ff0055;
