@@ -3,36 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tu Juego</title>
+  <title>LQI Studio Game</title>
+
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="level1.css" />
 </head>
 <body>
-  <!-- Fondo y elementos comunes -->
+  <!-- Fondo gradiente animado -->
   <div id="backgroundGradient"></div>
   <div id="backgroundImage"></div>
+  <img id="mobileWarning" src="assets/images/mobile.png" alt="Solo móvil" />
 
-  <!-- Mensaje para móvil -->
-  <img id="mobileWarning" src="assets/images/mobile-warning.png" alt="Advertencia móvil" />
-
-  <!-- Menú inicial -->
+  <!-- MENÚ INICIAL (instrucciones + controles + botón play) -->
   <div id="introText" class="intro">
-    <div class="instructions">Presiona JUGAR para comenzar</div>
+    <div class="text-container">
+      <p class="instructions">
+        Presiona "▶️ JUGAR" para comenzar<br />
+        Usa los controles para ajustar el volumen<br />
+        No se permite copiar ni seleccionar el texto
+      </p>
+    </div>
+
+    <div class="audio-controls">
+      <button id="playAudio" title="Reproducir música">▶️</button>
+      <input
+        type="range"
+        id="volumeControl"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+        aria-label="Control de volumen"
+      />
+    </div>
+
     <div class="buttons-container">
-      <button id="playBtn">JUGAR</button>
+      <button id="playBtn">▶️ JUGAR</button>
     </div>
   </div>
 
-  <!-- Contenedor para niveles cargados dinámicamente -->
-  <div id="levelContainer" style="display:none;"></div>
+  <!-- CONTENEDOR DONDE SE CARGAN LOS NIVELES DINÁMICAMENTE -->
+  <div id="levelContainer" style="display: none;"></div>
 
-  <!-- Audio -->
-  <audio id="bgMusic" src="assets/sfx/music.mp3" loop></audio>
-  <div class="audio-controls">
-    <button id="playAudio" title="Reproducir música">▶️</button>
-    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5" />
-  </div>
-
+  <!-- Scripts -->
   <script src="script.js"></script>
 </body>
 </html>
