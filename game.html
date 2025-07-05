@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game - LQISTUDIO</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="level1.css" />
+</head>
+<body>
+  <div id="levelContainer">
+    <!-- Aquí va el contenido del nivel 1 si quieres cargarlo estático,
+         o lo puedes cargar dinámicamente con fetch en level1.js -->
+  </div>
+  <audio id="bgMusic" src="assets/sfx/background.mp3" loop autoplay></audio>
+  
+  <script src="level1.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof initLevel1 === "function") {
+        initLevel1();
+      }
+    });
+  </script>
+</body>
+</html>
