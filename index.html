@@ -6,15 +6,29 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* Video de fondo con transparencia, encima del gradiente */
     #backgroundVideo {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      z-index: -2;
+      z-index: 25; /* Mayor que el gradiente, menor que el contenido */
       pointer-events: none;
+      background: transparent;
     }
+
+    /* Fondo gradiente animado (está en style.css pero por si acaso) */
+    #backgroundGradient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+      background-size: 600% 600%;
+      animation: gradientAnimation 15s ease infinite;
+      z-index: 0;
+    }
+
     #mobileWarning {
       display: none;
       position: fixed;
@@ -37,18 +51,16 @@
   </style>
 </head>
 <body>
-  <!-- Video de fondo -->
+  <!-- Gradiente de fondo -->
+  <div id="backgroundGradient"></div>
+
+  <!-- Video con transparencia encima del gradiente -->
   <video id="backgroundVideo" autoplay muted loop playsinline>
-    <source src="assets/video/LQISTUDIO.webm" type="video/webm">
+    <source src="assets/video/LQISTUDIO.webm" type="video/webm" />
     Tu navegador no soporta video en formato .webm.
   </video>
 
-  <!-- Gradiente encima del video (opcional) -->
-  <div id="backgroundGradient"></div>
-
-  <!-- Imagen de fondo (desactivada si usas video, puedes eliminar si quieres) -->
-  <!-- <div id="backgroundImage"></div> -->
-
+  <!-- Imagen para móviles -->
   <img id="mobileWarning" src="assets/images/brake_cel.png" alt="No disponible en móvil" />
 
   <div class="intro" id="introText">
