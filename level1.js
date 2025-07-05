@@ -3,13 +3,12 @@ function initLevel1() {
   const username = document.getElementById("username");
   const password = document.getElementById("password");
   const message = document.getElementById("message");
+  const exitBtn = document.getElementById("exitBtn");
 
   let accessGranted = false;
 
-  // Efecto botón que se mueve cuando no se ha ingresado la clave o es incorrecta
   loginBtn.addEventListener("mouseover", () => {
     if (accessGranted) return;
-
     if (password.value === "" || password.value !== "1234") {
       const maxMove = 120;
       const x = Math.random() * maxMove * 2 - maxMove;
@@ -22,18 +21,13 @@ function initLevel1() {
       message.style.color = "#ff0055";
       message.style.textShadow = "0 0 8px #ff0055";
 
-      message.animate(
-        [
-          { opacity: 1 },
-          { opacity: 0.3 },
-          { opacity: 1 }
-        ],
-        { duration: 300, iterations: 2 }
-      );
+      message.animate([{ opacity: 1 }, { opacity: 0.3 }, { opacity: 1 }], {
+        duration: 300,
+        iterations: 2
+      });
     }
   });
 
-  // Validar contraseña al hacer click
   loginBtn.addEventListener("click", () => {
     if (password.value === "1234") {
       accessGranted = true;
@@ -45,14 +39,11 @@ function initLevel1() {
       message.textContent = "❌ Contraseña incorrecta.";
       message.style.color = "#ff66c4";
       message.style.textShadow = "0 0 6px #ff66c4";
-
       loginBtn.style.transition = "transform 0.2s ease";
       loginBtn.style.transform = "translate(0, 0)";
     }
   });
 
-  // Botón salir para volver al menú principal
-  const exitBtn = document.getElementById("exitBtn");
   if (exitBtn) {
     exitBtn.addEventListener("click", () => {
       const introText = document.getElementById("introText");
@@ -61,6 +52,7 @@ function initLevel1() {
         levelContainer.innerHTML = "";
         levelContainer.style.display = "none";
         levelContainer.classList.remove("level1");
+        document.body.classList.remove("level1");
         introText.style.display = "block";
       }
     });
