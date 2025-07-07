@@ -1,12 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initGameBridge() {
   const nextLevelBtn = document.getElementById('nextLevelBtn');
-  const exitBtn = document.getElementById('exitBtn'); // ← usa el mismo ID que en game.html
+  const exitBtn = document.getElementById('exitBtn');
 
-  // Obtener el número del nivel actual desde la URL (por si usas ?level=2)
   const params = new URLSearchParams(window.location.search);
   const currentLevel = parseInt(params.get('level')) || 1;
 
-  // Botón SIGUIENTE NIVEL
   nextLevelBtn?.addEventListener('click', () => {
     const nextLevel = currentLevel + 1;
     if (window.loadLevel) {
@@ -21,18 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Botón SALIR AL MENÚ (misma lógica del nivel)
   exitBtn?.addEventListener('click', () => {
-    const intro = document.getElementById("introText");
-    const container = document.getElementById("levelContainer");
-
-    if (intro && container) {
-      intro.style.display = "flex"; // se mantiene centrado
-      container.innerHTML = "";
-      container.className = "";
-      container.style.display = "none";
+    if (typeof window.exitLevel === "function") {
+      window.exitLevel();
     } else {
+      console.warn("⚠️ No se encontró exitLevel(), recargando...");
       window.location.reload();
     }
   });
-});
+}
+
+// Ejecutar directamente porque ya estás en el DOM
+initGameBridge();
