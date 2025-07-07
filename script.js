@@ -90,9 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
     levelContainer.className = "";
   }
 
-  // Función para salir del nivel y volver al menú (por si quieres botón salir)
+  // Función para salir del nivel y volver al menú
   function exitLevel() {
-    // Aquí podrías parar scripts o sonidos si es necesario
     showIntro();
   }
 
@@ -114,7 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Proteger la interfaz
+  // Botón INSTRUCCIONES → Abre la guía en otra pestaña
+  const instructionsBtn = document.getElementById("instructionsBtn");
+  if (instructionsBtn) {
+    instructionsBtn.addEventListener("click", () => {
+      window.open("instrucciones/instrucciones.html", "_blank");
+    });
+  }
+
+  // Proteger la interfaz (evitar clic derecho y selección)
   ["contextmenu", "selectstart", "dragstart"].forEach(eventType =>
     document.addEventListener(eventType, ev => ev.preventDefault())
   );
