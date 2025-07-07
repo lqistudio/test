@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const nextLevelBtn = document.getElementById('nextLevelBtn');
-  const exitBtn = document.getElementById('exitBtn'); // ← corregido: este es el ID que usas en game.html
+  const exitBtn = document.getElementById('exitBtn'); // ← usa el mismo ID que en game.html
 
-  // Obtener el número del nivel actual desde URL (query param ?level=1)
+  // Obtener el número del nivel actual desde la URL (por si usas ?level=2)
   const params = new URLSearchParams(window.location.search);
   const currentLevel = parseInt(params.get('level')) || 1;
 
@@ -17,16 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
         `levels/level${nextLevel}/level${nextLevel}.css`
       );
     } else {
-      alert('⚠️ No se pudo cargar el siguiente nivel. Función global no encontrada.');
+      alert('⚠️ No se pudo cargar el siguiente nivel.');
     }
   });
 
-  // Botón SALIR AL MENÚ
+  // Botón SALIR AL MENÚ (misma lógica del nivel)
   exitBtn?.addEventListener('click', () => {
-    if (window.showIntro) {
-      window.showIntro();
+    const intro = document.getElementById("introText");
+    const container = document.getElementById("levelContainer");
+
+    if (intro && container) {
+      intro.style.display = "flex"; // se mantiene centrado
+      container.innerHTML = "";
+      container.className = "";
+      container.style.display = "none";
     } else {
-      console.warn('⚠️ No se encontró la función showIntro. Recargando...');
       window.location.reload();
     }
   });
