@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const instructionsBtn = document.getElementById("instructionsBtn");
   if (instructionsBtn) {
     instructionsBtn.addEventListener("click", () => {
-      window.open("instrucciones/instrucciones.html", "_blank");
+      window.open("instruciones/instrucciones.html", "_blank");
     });
   }
 
