@@ -1,38 +1,69 @@
+/* Contenedor principal centrado en pantalla */
+#levelContainer.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Tarjeta visual del puente de nivel */
 .game-screen-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  padding: 40px 30px;
   background: rgba(20, 20, 20, 0.9);
-  border-radius: 12px;
-  box-shadow: 0 0 20px #8a00ff;
+  border-radius: 16px;
+  box-shadow: 0 0 25px #8a00ff;
   user-select: none;
   color: #eee;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
+/* Título del mensaje */
 .game-screen-container h2 {
   font-size: 2rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-shadow: 0 0 8px #8a00ff;
+  text-align: center;
 }
 
+/* Botones */
 .game-screen-container button {
   background-color: #8a00ff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   color: white;
-  font-size: 1.1rem;
-  padding: 12px 24px;
-  margin: 0 10px 15px 10px;
+  font-size: 1.2rem;
+  padding: 14px 28px;
+  margin: 10px 0;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 0 8px #8a00ff;
+  width: 100%;
+  max-width: 300px;
 }
 
 .game-screen-container button:hover {
   background-color: #b14dff;
+  transform: scale(1.03);
 }
 
+/* Animación suave al mostrar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
