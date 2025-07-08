@@ -1,1 +1,34 @@
+.level-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: white;
+  text-shadow: 0 0 10px #0ff;
+  font-family: 'Oxanium', sans-serif;
+}
+
+.level-content input {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #00ffff;
+  border-radius: 8px;
+  background-color: #111;
+  color: white;
+}
+
+.level-content button {
+  background-color: #00ffff;
+  color: black;
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.level-content button:hover {
+  transform: scale(1.05);
+}
 
