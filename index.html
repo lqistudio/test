@@ -6,8 +6,8 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Estilos previos (no los repito por espacio) */
-    /* ... mismos estilos que enviaste ... */
+    /* ... Estilos ya definidos ... */
+    /* Puedes mantener aquí tu CSS o moverlo a style.css */
   </style>
 </head>
 <body>
@@ -34,50 +34,72 @@
 
   <audio id="bgMusic" loop preload="auto" src="Mechstorm.mp3"></audio>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"></script>
 
   <script>
+    // Tu configuración original de Firebase
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_PROYECTO.firebaseapp.com",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_BUCKET.appspot.com",
-      messagingSenderId: "XXXXXXXXXXX",
-      appId: "1:XXXXXXXXXXX:web:XXXXXXXXXXX"
+      apiKey: "AIzaSyDbJUAEM068gfX8eLo3cN_zLZfKiQtqlAg",
+      authDomain: "olvide-mi-contrasena.firebaseapp.com",
+      projectId: "olvide-mi-contrasena",
+      storageBucket: "olvide-mi-contrasena.firebasestorage.app",
+      messagingSenderId: "547650308745",
+      appId: "1:547650308745:web:2372643eb81312ef4d5458",
+      measurementId: "G-3QVL9ML0TM"
     };
+
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Autenticación anónima y carga del progreso
-    auth.signInAnonymously().then(() => {
-      console.log("Usuario autenticado anónimamente");
+    // Autenticación anónima y detección de nivel guardado
+    auth.signInAnonymously()
+      .then(() => {
+        auth.onAuthStateChanged(async user => {
+          if (user) {
+            const ref = db.collection("usuarios").doc(user.uid);
+            const doc = await ref.get();
 
-      auth.onAuthStateChanged(async user => {
-        if (user) {
-          const ref = db.collection("usuarios").doc(user.uid);
-          const doc = await ref.get();
-          if (doc.exists && doc.data().nivel && doc.data().nivel > 1) {
-            const continuarBtn = document.createElement("button");
-            continuarBtn.textContent = "⏭️ CONTINUAR";
-            continuarBtn.id = "continueBtn";
-            continuarBtn.onclick = () => {
-              const n = doc.data().nivel;
-              loadLevel(
-                n,
-                `levels/level${n}/level${n}-content.html`,
-                `levels/level${n}/level${n}.js`,
-                `levels/level${n}/level${n}.css`
-              );
-            };
-            document.querySelector(".intro").appendChild(continuarBtn);
+            if (doc.exists && doc.data().nivel && doc.data().nivel > 1) {
+              const continuarBtn = document.createElement("button");
+              continuarBtn.textContent = "⏭️ CONTINUAR";
+              continuarBtn.id = "continueBtn";
+              continuarBtn.style.fontSize = "24px";
+              continuarBtn.style.padding = "15px 40px";
+              continuarBtn.style.backgroundColor = "#00ff88";
+              continuarBtn.style.border = "none";
+              continuarBtn.style.borderRadius = "10px";
+              continuarBtn.style.color = "white";
+              continuarBtn.style.cursor = "pointer";
+              continuarBtn.style.fontFamily = "Oxanium, sans-serif";
+              continuarBtn.style.boxShadow = "0 0 10px #00ff88";
+              continuarBtn.style.transition = "background-color 0.3s ease, transform 0.2s";
+              continuarBtn.onmouseover = () => continuarBtn.style.transform = "scale(1.05)";
+              continuarBtn.onmouseout = () => continuarBtn.style.transform = "scale(1)";
+              
+              continuarBtn.onclick = () => {
+                const n = doc.data().nivel;
+                loadLevel(
+                  n,
+                  `levels/level${n}/level${n}-content.html`,
+                  `levels/level${n}/level${n}.js`,
+                  `levels/level${n}/level${n}.css`
+                );
+              };
+
+              document.querySelector(".intro").appendChild(continuarBtn);
+            }
           }
-        }
+        });
+      })
+      .catch(err => {
+        console.error("Error al autenticar:", err);
+        alert("Error de conexión con el sistema. Intenta más tarde.");
       });
-    }).catch(console.error);
 
     // Función global para guardar progreso
     async function guardarProgreso(nivel) {
@@ -87,12 +109,12 @@
       await ref.set({ nivel }, { merge: true });
     }
 
-    // Exponer para otros scripts
+    // Exponer para otros scripts (nivel 1, etc.)
     window.guardarProgreso = guardarProgreso;
   </script>
 
   <script>
-    // Bloquear evento PiP
+    // Bloquear Picture-in-Picture
     const video = document.getElementById('backgroundVideo');
     video.addEventListener('enterpictureinpicture', e => {
       e.preventDefault();
@@ -101,6 +123,7 @@
     });
   </script>
 
+  <!-- Tu lógica de juego general -->
   <script src="script.js"></script>
 </body>
 </html>
