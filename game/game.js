@@ -5,8 +5,24 @@ function initGameBridge() {
   const params = new URLSearchParams(window.location.search);
   const currentLevel = parseInt(params.get('level')) || 1;
 
-  nextLevelBtn?.addEventListener('click', () => {
+  nextLevelBtn?.addEventListener('click', async () => {
     const nextLevel = currentLevel + 1;
+
+    // Guardar progreso en Firebase si está disponible
+    if (firebase?.auth?.().currentUser && firebase?.firestore) {
+      try {
+        const db = firebase.firestore();
+        const user = firebase.auth().currentUser;
+        const ref = db.collection("usuarios").doc(user.uid);
+
+        await ref.set({ nivel: nextLevel }, { merge: true });
+        console.log(`✅ Nivel ${nextLevel} guardado en Firebase.`);
+      } catch (err) {
+        console.warn("❌ Error al guardar progreso en Firebase:", err);
+      }
+    }
+
+    // Cargar siguiente nivel
     if (window.loadLevel) {
       window.loadLevel(
         nextLevel,
@@ -29,5 +45,5 @@ function initGameBridge() {
   });
 }
 
-// Ejecutar directamente porque ya estás en el DOM
+// Ejecutar al iniciar
 initGameBridge();
