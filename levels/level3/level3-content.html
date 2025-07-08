@@ -1,13 +1,19 @@
+<div class="level3-content">
+  <h2>🌐 Nivel 3 - Naciones no reconocidas (por razones obvias)</h2>
+  <p>Selecciona el país correcto y desbloquea el próximo nivel. La pista está en tu imaginación...</p>
 
-<div class="level-content">
-  <h2>🔒 Nivel 3 - La última barrera</h2>
-  <p>Introduce la clave maestra. La pista está en el eco de las almas perdidas...</p>
-
-  <form id="level3Form" autocomplete="off">
-    <input type="text" id="clave" placeholder="Clave secreta" required />
-    <button type="submit">🔓 Desbloquear</button>
+  <form id="level3Form">
+    <select id="countrySelect" required>
+      <option value="">-- Elige tu nación favorita --</option>
+      <option value="republika_de_wafflonia">Republika de Wafflonia</option>
+      <option value="imperio_de_la_silla_rota">Imperio de la Silla Rota</option>
+      <option value="reino_de_loquilandia">Reino de Loquilandia</option> <!-- ✅ la correcta -->
+      <option value="federacion_gatuna_del_sur">Federación Gatuna del Sur</option>
+      <option value="reino_de_los_cucharones">Reino de los Cucharones</option>
+    </select>
+    <button type="submit">Verificar</button>
   </form>
 
   <p id="level3Message"></p>
-  <button id="exitBtn">🚪 Salir</button>
+  <button id="exitBtn">⏪ Volver</button>
 </div>
