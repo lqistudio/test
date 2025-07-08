@@ -93,8 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
         script.src = jsfile;
         document.body.appendChild(script);
 
-        // Guardar progreso
-        guardarProgreso(n + 1);
+        // Aquí mejor no guardar progreso al cargar nivel,
+        // sino cuando el usuario realmente complete un nivel.
+        // window.guardarProgreso(n);
       })
       .catch(err => {
         alert(err.message);
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Firebase: mostrar botón CONTINUAR si aplica
-  if (firebase && firebase.auth && firebase.firestore) {
+  if (typeof firebase !== "undefined" && firebase.auth && firebase.firestore) {
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -138,19 +139,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const ref = db.collection("usuarios").doc(user.uid);
         const doc = await ref.get();
         if (doc.exists && doc.data().nivel && doc.data().nivel > 1) {
-          const continuarBtn = document.createElement("button");
-          continuarBtn.textContent = "⏭️ CONTINUAR";
-          continuarBtn.id = "continueBtn";
-          continuarBtn.onclick = () => {
-            const n = doc.data().nivel;
-            loadLevel(
-              n,
-              `levels/level${n}/level${n}-content.html`,
-              `levels/level${n}/level${n}.js`,
-              `levels/level${n}/level${n}.css`
-            );
-          };
-          document.querySelector(".intro").appendChild(continuarBtn);
+          if (!document.getElementById("continueBtn")) {
+            const continuarBtn = document.createElement("button");
+            continuarBtn.textContent = "⏭️ CONTINUAR";
+            continuarBtn.id = "continueBtn";
+            continuarBtn.onclick = () => {
+              const n = doc.data().nivel;
+              loadLevel(
+                n,
+                `levels/level${n}/level${n}-content.html`,
+                `levels/level${n}/level${n}.js`,
+                `levels/level${n}/level${n}.css`
+              );
+            };
+            document.querySelector(".intro").appendChild(continuarBtn);
+          }
         }
       }
     });
