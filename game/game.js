@@ -24,46 +24,6 @@ function validateLevelAccess(requestedLevel, userLevel) {
   return requestedLevel <= userLevel;
 }
 
-function loadLevel(level) {
-  const content = `levels/level${level}/level${level}-content.html`;
-  const js = `levels/level${level}/level${level}.js`;
-  const css = `levels/level${level}/level${level}.css`;
-
-  fetch(content)
-    .then(r => r.text())
-    .then(html => {
-      const container = document.getElementById("levelContainer");
-      container.innerHTML = html;
-      container.className = `level${level}`;
-
-      // Cargar CSS si no está ya cargado
-      if (!document.getElementById(`css-level${level}`)) {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = css;
-        link.id = `css-level${level}`;
-        document.head.appendChild(link);
-      }
-
-      // Quitar JS anterior si hay
-      const prevScript = document.getElementById("js-level");
-      if (prevScript) prevScript.remove();
-
-      // Cargar JS nuevo
-      const script = document.createElement("script");
-      script.src = js;
-      script.id = "js-level";
-      script.onload = () => {
-        // ✅ Inicializar botones del game después que todo cargue
-        initGameBridge(level);
-      };
-      document.body.appendChild(script);
-    })
-    .catch(() => {
-      alert("⚠️ No se pudo cargar el nivel.");
-    });
-}
-
 function showNotification(message, duration = 3000) {
   const box = document.getElementById('notification');
   if (!box) return;
@@ -75,25 +35,68 @@ function showNotification(message, duration = 3000) {
   }, duration);
 }
 
+async function levelExists(level) {
+  const url = `levels/level${level}/level${level}-content.html`;
+  try {
+    const res = await fetch(url, { method: 'HEAD' });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+function loadLevel(level) {
+  const content = `levels/level${level}/level${level}-content.html`;
+  const js = `levels/level${level}/level${level}.js`;
+  const css = `levels/level${level}/level${level}.css`;
+
+  fetch(content)
+    .then(r => {
+      if (!r.ok) throw new Error("Nivel no encontrado");
+      return r.text();
+    })
+    .then(html => {
+      const container = document.getElementById("levelContainer");
+      container.innerHTML = html;
+      container.className = `level${level}`;
+
+      if (!document.getElementById(`css-level${level}`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = css;
+        link.id = `css-level${level}`;
+        document.head.appendChild(link);
+      }
+
+      const prevScript = document.getElementById("js-level");
+      if (prevScript) prevScript.remove();
+
+      const script = document.createElement("script");
+      script.src = js;
+      script.id = "js-level";
+      script.onload = () => {
+        initGameBridge(level);
+      };
+      document.body.appendChild(script);
+    })
+    .catch(() => {
+      showNotification("🚧 No se pudo cargar el nivel.");
+    });
+}
+
 async function initGameBridge(currentLevel) {
   const nextLevelBtn = document.getElementById('nextLevelBtn');
   const exitBtn = document.getElementById('exitBtn');
 
-  // 🔘 Botón siguiente nivel
   nextLevelBtn?.addEventListener('click', async () => {
     const nextLevel = currentLevel + 1;
 
-    // Verificar si el nivel existe
-    const exists = await fetch(`levels/level${nextLevel}/level${nextLevel}-content.html`, { method: 'HEAD' })
-      .then(res => res.ok)
-      .catch(() => false);
-
+    const exists = await levelExists(nextLevel);
     if (!exists) {
       showNotification("🚧 No se encontró el siguiente nivel.");
       return;
     }
 
-    // Guardar en Firebase
     if (window.auth?.currentUser && window.db) {
       try {
         const ref = window.db.collection("usuarios").doc(window.auth.currentUser.uid);
@@ -108,7 +111,6 @@ async function initGameBridge(currentLevel) {
     loadLevel(nextLevel);
   });
 
-  // 🔙 Botón salir
   exitBtn?.addEventListener('click', () => {
     if (typeof window.exitLevel === "function") {
       window.exitLevel();
@@ -120,18 +122,23 @@ async function initGameBridge(currentLevel) {
 
 async function startGameLoader() {
   const params = new URLSearchParams(window.location.search);
-  let requestedLevel = parseInt(params.get('level')) || 1;
+  const requestedLevel = parseInt(params.get('level')) || 1;
 
   const userLevel = await getUserLevelFromFirebase();
 
+  if (!(await levelExists(requestedLevel))) {
+    showNotification("🚧 El nivel solicitado no existe.");
+    return;
+  }
+
   if (!validateLevelAccess(requestedLevel, userLevel)) {
     showNotification("⛔ Nivel bloqueado. No tienes acceso aún.");
-    requestedLevel = userLevel;
+    return;
   }
 
   updateURLLevel(requestedLevel);
   loadLevel(requestedLevel);
 }
 
-// 🚀 Inicia todo al cargar el archivo
+// 🚀 Iniciar
 startGameLoader();
