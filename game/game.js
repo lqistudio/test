@@ -1,66 +1,18 @@
-async function getUserLevelFromFirebase() {
-  if (!window.auth?.currentUser || !window.db) {
-    console.warn("⚠️ Firebase no está disponible.");
-    return null;
-  }
-
-  try {
-    const ref = window.db.collection("usuarios").doc(window.auth.currentUser.uid);
-    const doc = await ref.get();
-    const data = doc.data();
-
-    return data?.nivel ?? 1;
-  } catch (err) {
-    console.warn("❌ Error al obtener nivel desde Firebase:", err);
-    return 1;
-  }
-}
-
-function updateURLLevel(level) {
-  const newUrl = new URL(window.location.href);
-  newUrl.searchParams.set("level", level);
-  window.history.replaceState({}, '', newUrl);
-}
-
-function validateLevelAccess(requestedLevel, userLevel) {
-  return requestedLevel <= userLevel;
-}
-
-function loadLevel(level) {
-  const content = `levels/level${level}/level${level}-content.html`;
-  const js = `levels/level${level}/level${level}.js`;
-  const css = `levels/level${level}/level${level}.css`;
-
-  if (typeof window.loadLevel === "function") {
-    window.loadLevel(level, content, js, css);
-  } else {
-    alert('⚠️ No se pudo cargar el nivel.');
-  }
-}
-
-function showNotification(message, duration = 3000) {
-  const box = document.getElementById('notification');
-  if (!box) return;
-  box.textContent = message;
-  box.style.display = 'block';
-
-  setTimeout(() => {
-    box.style.display = 'none';
-  }, duration);
-}
-
 async function initGameBridge() {
   const nextLevelBtn = document.getElementById('nextLevelBtn');
   const exitBtn = document.getElementById('exitBtn');
 
+  // Extraemos el nivel solicitado inicialmente
   const params = new URLSearchParams(window.location.search);
-  const requestedLevel = parseInt(params.get('level')) || 1;
+  let requestedLevel = parseInt(params.get('level')) || 1;
 
   const userLevel = await getUserLevelFromFirebase();
 
   if (!validateLevelAccess(requestedLevel, userLevel)) {
     showNotification("⛔ Nivel bloqueado. No tienes acceso aún.");
     loadLevel(userLevel);
+    requestedLevel = userLevel; // Actualizar para que continúe en nivel permitido
+    updateURLLevel(requestedLevel);
     return;
   }
 
@@ -68,7 +20,12 @@ async function initGameBridge() {
   loadLevel(requestedLevel);
 
   nextLevelBtn?.addEventListener('click', async () => {
-    const nextLevel = requestedLevel + 1;
+    // Aquí actualizamos el nivel actual dinámicamente en vez de usar la variable fija
+    // Tomamos el nivel del URL para tenerlo siempre actualizado
+    const params = new URLSearchParams(window.location.search);
+    let currentLevel = parseInt(params.get('level')) || requestedLevel;
+
+    const nextLevel = currentLevel + 1;
 
     // Verificar si existe el siguiente nivel
     const contentURL = `levels/level${nextLevel}/level${nextLevel}-content.html`;
@@ -104,5 +61,3 @@ async function initGameBridge() {
     }
   });
 }
-
-initGameBridge();
