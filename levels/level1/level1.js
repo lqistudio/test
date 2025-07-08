@@ -6,7 +6,7 @@ function initLevel1() {
   const validUser = "admin";
   const validPass = "contraseña123";
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const username = document.getElementById('username').value.trim();
@@ -16,21 +16,33 @@ function initLevel1() {
       msg.textContent = "✅ Acceso concedido. ¡Nivel completado!";
       msg.style.color = "#0f0";
 
-      // 🔐 Guardar progreso del usuario (nivel 2)
+      // Guardar progreso del usuario (nivel 2)
       if (typeof window.guardarProgreso === "function") {
-        window.guardarProgreso(2).catch(console.error);
+        try {
+          await window.guardarProgreso(2);
+        } catch (err) {
+          console.error("❌ Error al guardar progreso:", err);
+        }
       }
 
-      // Esperamos y cargamos la pantalla de logro desde game/
+      // Esperar y cargar pantalla de logro desde game/
       setTimeout(() => {
         fetch("game/game.html")
-          .then(r => r.text())
+          .then(r => {
+            if (!r.ok) throw new Error("No se pudo cargar game.html");
+            return r.text();
+          })
           .then(html => {
             const container = document.getElementById("levelContainer");
             container.innerHTML = html;
             container.className = "game";
+            container.style.display = "flex";
 
-            // Cargar CSS de game solo si no está cargado
+            // Ocultar menú
+            const intro = document.getElementById("introText");
+            if (intro) intro.style.display = "none";
+
+            // Cargar CSS si no está presente
             if (!document.getElementById("css-game")) {
               const link = document.createElement("link");
               link.rel = "stylesheet";
@@ -39,7 +51,7 @@ function initLevel1() {
               document.head.appendChild(link);
             }
 
-            // Cargar JS de game
+            // Cargar JS (elimina si ya estaba)
             const prevScript = document.getElementById("js-game");
             if (prevScript) prevScript.remove();
 
@@ -47,6 +59,11 @@ function initLevel1() {
             script.src = "game/game.js";
             script.id = "js-game";
             document.body.appendChild(script);
+          })
+          .catch(err => {
+            console.error("❌ Error al cargar pantalla de logro:", err);
+            msg.textContent = "❌ Error al cargar pantalla de logro.";
+            msg.style.color = "#f00";
           });
       }, 1500);
 
