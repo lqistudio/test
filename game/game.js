@@ -38,6 +38,17 @@ function loadLevel(level) {
   }
 }
 
+function showNotification(message, duration = 3000) {
+  const box = document.getElementById('notification');
+  if (!box) return;
+  box.textContent = message;
+  box.style.display = 'block';
+
+  setTimeout(() => {
+    box.style.display = 'none';
+  }, duration);
+}
+
 async function initGameBridge() {
   const nextLevelBtn = document.getElementById('nextLevelBtn');
   const exitBtn = document.getElementById('exitBtn');
@@ -48,7 +59,7 @@ async function initGameBridge() {
   const userLevel = await getUserLevelFromFirebase();
 
   if (!validateLevelAccess(requestedLevel, userLevel)) {
-    alert("⚠️ No tienes acceso a este nivel todavía.");
+    showNotification("⛔ Nivel bloqueado. No tienes acceso aún.");
     loadLevel(userLevel);
     return;
   }
@@ -59,6 +70,18 @@ async function initGameBridge() {
   nextLevelBtn?.addEventListener('click', async () => {
     const nextLevel = requestedLevel + 1;
 
+    // Verificar si existe el siguiente nivel
+    const contentURL = `levels/level${nextLevel}/level${nextLevel}-content.html`;
+    const exists = await fetch(contentURL, { method: 'HEAD' })
+      .then(res => res.ok)
+      .catch(() => false);
+
+    if (!exists) {
+      showNotification("🚧 No se encontró el siguiente nivel.");
+      return;
+    }
+
+    // Guardar progreso en Firebase
     if (window.auth?.currentUser && window.db) {
       try {
         const ref = window.db.collection("usuarios").doc(window.auth.currentUser.uid);
