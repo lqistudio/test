@@ -1,69 +1,78 @@
-/* Contenedor principal centrado en pantalla */
-#levelContainer.game {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #000000;
+  color: white;
+  overflow: hidden;
 }
 
-/* Tarjeta visual del puente de nivel */
-.game-screen-container {
+.game {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  max-width: 600px;
-  width: 100%;
-  padding: 40px 30px;
-  background: rgba(20, 20, 20, 0.9);
-  border-radius: 16px;
-  box-shadow: 0 0 25px #8a00ff;
-  user-select: none;
-  color: #eee;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  animation: fadeIn 0.5s ease-in-out;
+  justify-content: center;
+  height: 100vh;
 }
 
-/* Título del mensaje */
-.game-screen-container h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-shadow: 0 0 8px #8a00ff;
+.game-screen-container {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(138, 0, 255, 0.7);
   text-align: center;
+  max-width: 500px;
 }
 
-/* Botones */
-.game-screen-container button {
+#gameMessage {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+button {
   background-color: #8a00ff;
-  border: none;
-  border-radius: 8px;
   color: white;
-  font-size: 1.2rem;
-  padding: 14px 28px;
-  margin: 10px 0;
+  border: none;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 0 8px #8a00ff;
-  width: 100%;
-  max-width: 300px;
+  box-shadow: 0 0 8px rgba(138, 0, 255, 0.6);
 }
 
-.game-screen-container button:hover {
-  background-color: #b14dff;
-  transform: scale(1.03);
+button:hover {
+  background-color: #a64dff;
+  transform: scale(1.05);
 }
 
-/* Animación suave al mostrar */
-@keyframes fadeIn {
+/* 🚨 Notificación flotante */
+#notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #8a00ff;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 0 15px #8a00ff;
+  z-index: 9999;
+  display: none;
+  animation: toastFade 0.4s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes toastFade {
   from {
     opacity: 0;
-    transform: scale(0.96);
+    transform: translateX(-50%) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateX(-50%) scale(1);
   }
 }
