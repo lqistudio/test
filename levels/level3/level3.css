@@ -1,34 +1,43 @@
-.level-content {
+.level3-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
+  font-family: "Oxanium", sans-serif;
   color: white;
-  text-shadow: 0 0 10px #0ff;
-  font-family: 'Oxanium', sans-serif;
+  padding: 30px;
+  text-align: center;
 }
 
-.level-content input {
+.level3-content select {
+  font-size: 18px;
   padding: 10px;
-  font-size: 16px;
-  border: 2px solid #00ffff;
-  border-radius: 8px;
-  background-color: #111;
-  color: white;
+  border-radius: 10px;
+  border: none;
+  background-color: #222;
+  color: #00ffee;
+  text-align: center;
 }
 
-.level-content button {
-  background-color: #00ffff;
-  color: black;
-  padding: 10px 20px;
-  font-weight: bold;
+.level3-content button {
+  font-size: 18px;
+  padding: 10px 25px;
   border: none;
+  background-color: #ff5ecc;
+  color: white;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff5ecc;
+  transition: all 0.3s ease;
 }
 
-.level-content button:hover {
+.level3-content button:hover {
   transform: scale(1.05);
+  background-color: #ff2bbf;
 }
 
+#level3Message {
+  font-weight: bold;
+  margin-top: 10px;
+}
