@@ -6,16 +6,21 @@ function initLevel2() {
   const validUser = "admin";
   const validPass = "alm4sombr4";
 
+  if (!form || !msg) {
+    console.error("No se encontró el formulario o el mensaje para nivel 2.");
+    return;
+  }
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const username = document.getElementById("username")?.value.trim() || "";
+    const password = document.getElementById("password")?.value.trim() || "";
 
     if (username === validUser && password === validPass) {
       msg.textContent = "✅ ¡Nivel 2 completado!";
       msg.style.color = "#0f0";
 
-      // ✅ Guardar progreso al nivel 3
+      // Guardar progreso al nivel 3
       if (typeof window.guardarProgreso === "function") {
         try {
           await window.guardarProgreso(3);
@@ -25,12 +30,16 @@ function initLevel2() {
         }
       }
 
-      // Cargar la pantalla de transición
+      // Cargar la pantalla de transición a game.html
       setTimeout(() => {
         fetch("game/game.html")
-          .then(r => r.text())
+          .then(r => {
+            if (!r.ok) throw new Error("No se pudo cargar game.html");
+            return r.text();
+          })
           .then(html => {
             const container = document.getElementById("levelContainer");
+            if (!container) throw new Error("No se encontró levelContainer");
             container.innerHTML = html;
             container.className = "game";
 
@@ -49,6 +58,10 @@ function initLevel2() {
             script.src = "game/game.js";
             script.id = "js-game";
             document.body.appendChild(script);
+          })
+          .catch(err => {
+            console.error(err);
+            alert("Error al cargar el juego. Intenta nuevamente.");
           });
       }, 1500);
     } else {
