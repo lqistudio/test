@@ -8,14 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const levelContainer = document.getElementById("levelContainer");
   const errorSound = new Audio("assets/sfx/error.mp3");
 
-  // Detección móvil
+  let currentLevel = 1;
+
+  // Detectar móvil
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     if (mobileWarning) mobileWarning.style.display = "block";
     if (introText) introText.style.display = "none";
     return;
   }
 
-  // Volumen dinámico
+  // Estilo del volumen dinámico
   function updateVolumeStyle(v) {
     const pct = v * 100;
     const c = v < 0.34 ? "#f00" : v < 0.67 ? "#ff0" : "#0f0";
@@ -45,8 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Mostrar intro
+  function showIntro() {
+    introText.style.display = "flex";
+    levelContainer.style.display = "none";
+    levelContainer.innerHTML = "";
+    levelContainer.className = "";
+  }
+
+  // Salir de nivel
+  function exitLevel() {
+    showIntro();
+  }
+
   // Función para cargar niveles
   function loadLevel(n, htm, jsfile, cssfile) {
+    currentLevel = n;
+
     fetch(htm)
       .then(r => {
         if (!r.ok) throw new Error("Nivel no encontrado");
@@ -58,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         introText.style.display = "none";
         levelContainer.style.display = "flex";
 
-        // Carga CSS del nivel
+        // Carga CSS
         if (!document.getElementById(`css-level${n}`)) {
           const link = document.createElement("link");
           link.rel = "stylesheet";
@@ -67,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.head.appendChild(link);
         }
 
-        // Carga JS del nivel
+        // Carga JS
         const prevScript = document.getElementById("js-level");
         if (prevScript) prevScript.remove();
 
@@ -75,32 +92,22 @@ document.addEventListener('DOMContentLoaded', () => {
         script.id = "js-level";
         script.src = jsfile;
         document.body.appendChild(script);
+
+        // Guardar progreso
+        guardarProgreso(n + 1);
       })
       .catch(err => {
         alert(err.message);
-        showIntro(); // usa la función que ahora limpia y muestra bien
+        showIntro();
       });
   }
 
-  // Función para mostrar menú inicial correctamente
-  function showIntro() {
-    introText.style.display = "flex"; // muy importante para mantener el flex
-    levelContainer.style.display = "none";
-    levelContainer.innerHTML = "";
-    levelContainer.className = "";
-  }
-
-  // Función para salir del nivel y volver al menú
-  function exitLevel() {
-    showIntro();
-  }
-
-  // Exponer funciones globalmente para game.js y otros
+  // Exponer funciones
   window.loadLevel = loadLevel;
   window.showIntro = showIntro;
   window.exitLevel = exitLevel;
 
-  // Botón PLAY → Nivel 1
+  // Botón PLAY
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
     playBtn.addEventListener("click", () => {
@@ -113,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Botón INSTRUCCIONES → Abre la guía en otra pestaña
+  // INSTRUCCIONES
   const instructionsBtn = document.getElementById("instructionsBtn");
   if (instructionsBtn) {
     instructionsBtn.addEventListener("click", () => {
@@ -121,7 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Proteger la interfaz (evitar clic derecho y selección)
+  // Firebase: mostrar botón CONTINUAR si aplica
+  if (firebase && firebase.auth && firebase.firestore) {
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(async user => {
+      if (user) {
+        const ref = db.collection("usuarios").doc(user.uid);
+        const doc = await ref.get();
+        if (doc.exists && doc.data().nivel && doc.data().nivel > 1) {
+          const continuarBtn = document.createElement("button");
+          continuarBtn.textContent = "⏭️ CONTINUAR";
+          continuarBtn.id = "continueBtn";
+          continuarBtn.onclick = () => {
+            const n = doc.data().nivel;
+            loadLevel(
+              n,
+              `levels/level${n}/level${n}-content.html`,
+              `levels/level${n}/level${n}.js`,
+              `levels/level${n}/level${n}.css`
+            );
+          };
+          document.querySelector(".intro").appendChild(continuarBtn);
+        }
+      }
+    });
+  }
+
+  // Proteger UI
   ["contextmenu", "selectstart", "dragstart"].forEach(eventType =>
     document.addEventListener(eventType, ev => ev.preventDefault())
   );
