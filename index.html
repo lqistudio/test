@@ -6,7 +6,7 @@
   <title>Olvidé mi Contraseña - LQISTUDIO</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Tus estilos aquí (omitidos por claridad) */
+    /* ... mantén tus estilos aquí ... */
   </style>
 </head>
 <body>
@@ -33,80 +33,90 @@
 
   <audio id="bgMusic" loop preload="auto" src="Mechstorm.mp3"></audio>
 
-  <!-- Firebase SDKs Vía CDN (correcto para sitios como GitHub Pages) -->
-  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"></script>
 
   <script>
+    // Configura Firebase y expón auth y db globalmente
     const firebaseConfig = {
       apiKey: "AIzaSyDbJUAEM068gfX8eLo3cN_zLZfKiQtqlAg",
       authDomain: "olvide-mi-contrasena.firebaseapp.com",
       projectId: "olvide-mi-contrasena",
-      storageBucket: "olvide-mi-contrasena.appspot.com",
+      storageBucket: "olvide-mi-contrasena.firebasestorage.app",
       messagingSenderId: "547650308745",
       appId: "1:547650308745:web:2372643eb81312ef4d5458",
       measurementId: "G-3QVL9ML0TM"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    // Inicializar Firebase al cargar toda la página
+    window.addEventListener("load", () => {
+      firebase.initializeApp(firebaseConfig);
+      window.auth = firebase.auth();
+      window.db = firebase.firestore();
 
-    auth.signInAnonymously()
-      .then(() => {
-        auth.onAuthStateChanged(async user => {
-          if (user) {
-            const ref = db.collection("usuarios").doc(user.uid);
-            const doc = await ref.get();
-            if (doc.exists && doc.data().nivel && doc.data().nivel > 1) {
-              const continuarBtn = document.createElement("button");
-              continuarBtn.textContent = "⏭️ CONTINUAR";
-              continuarBtn.id = "continueBtn";
-              continuarBtn.style.cssText = `
-                font-size: 24px;
-                padding: 15px 40px;
-                background-color: #00ff88;
-                border: none;
-                border-radius: 10px;
-                color: white;
-                cursor: pointer;
-                font-family: 'Oxanium', sans-serif;
-                box-shadow: 0 0 10px #00ff88;
-                transition: background-color 0.3s ease, transform 0.2s;
-              `;
-              continuarBtn.onmouseover = () => continuarBtn.style.transform = "scale(1.05)";
-              continuarBtn.onmouseout = () => continuarBtn.style.transform = "scale(1)";
-              continuarBtn.onclick = () => {
-                const n = doc.data().nivel;
-                window.loadLevel?.(
-                  n,
-                  `levels/level${n}/level${n}-content.html`,
-                  `levels/level${n}/level${n}.js`,
-                  `levels/level${n}/level${n}.css`
-                );
-              };
-              document.querySelector(".intro").appendChild(continuarBtn);
+      // Autenticación anónima y carga del botón continuar si aplica
+      auth.signInAnonymously()
+        .then(() => {
+          auth.onAuthStateChanged(async user => {
+            if (user) {
+              const ref = db.collection("usuarios").doc(user.uid);
+              const doc = await ref.get();
+
+              if (doc.exists && doc.data().nivel && doc.data().nivel > 1) {
+                if (!document.getElementById("continueBtn")) {
+                  const continuarBtn = document.createElement("button");
+                  continuarBtn.textContent = "⏭️ CONTINUAR";
+                  continuarBtn.id = "continueBtn";
+                  continuarBtn.style.fontSize = "24px";
+                  continuarBtn.style.padding = "15px 40px";
+                  continuarBtn.style.backgroundColor = "#00ff88";
+                  continuarBtn.style.border = "none";
+                  continuarBtn.style.borderRadius = "10px";
+                  continuarBtn.style.color = "white";
+                  continuarBtn.style.cursor = "pointer";
+                  continuarBtn.style.fontFamily = "Oxanium, sans-serif";
+                  continuarBtn.style.boxShadow = "0 0 10px #00ff88";
+                  continuarBtn.style.transition = "background-color 0.3s ease, transform 0.2s";
+                  continuarBtn.onmouseover = () => continuarBtn.style.transform = "scale(1.05)";
+                  continuarBtn.onmouseout = () => continuarBtn.style.transform = "scale(1)";
+                  
+                  continuarBtn.onclick = () => {
+                    const n = doc.data().nivel;
+                    if (window.loadLevel) {
+                      window.loadLevel(
+                        n,
+                        `levels/level${n}/level${n}-content.html`,
+                        `levels/level${n}/level${n}.js`,
+                        `levels/level${n}/level${n}.css`
+                      );
+                    }
+                  };
+
+                  document.querySelector(".intro").appendChild(continuarBtn);
+                }
+              }
             }
-          }
+          });
+        })
+        .catch(err => {
+          console.error("Error al autenticar:", err);
+          alert("Error de conexión con el sistema. Intenta más tarde.");
         });
-      })
-      .catch(err => {
-        console.error("Error al autenticar:", err);
-        alert("Error de conexión con Firebase. Intenta más tarde.");
-      });
 
-    // Guardar progreso globalmente
-    window.guardarProgreso = async function(nivel) {
-      const user = firebase.auth().currentUser;
-      if (!user) return;
-      const ref = firebase.firestore().collection("usuarios").doc(user.uid);
-      await ref.set({ nivel }, { merge: true });
-    };
+      // Función global para guardar progreso
+      window.guardarProgreso = async function(nivel) {
+        const user = auth.currentUser;
+        if (!user) return;
+        const ref = db.collection("usuarios").doc(user.uid);
+        await ref.set({ nivel }, { merge: true });
+      };
+    });
   </script>
 
-  <!-- Protección del video -->
   <script>
+    // Bloquear Picture-in-Picture
     const video = document.getElementById('backgroundVideo');
     video.addEventListener('enterpictureinpicture', e => {
       e.preventDefault();
@@ -115,7 +125,7 @@
     });
   </script>
 
-  <!-- Tu lógica general -->
-  <script src="script.js"></script>
+  <!-- Tu lógica principal -->
+  <script src="script.js" defer></script>
 </body>
 </html>
