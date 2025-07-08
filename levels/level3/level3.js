@@ -3,53 +3,55 @@ function initLevel3() {
   const msg = document.getElementById("level3Message");
   const exitBtn = document.getElementById("exitBtn");
 
-  const claveCorrecta = "alma404"; // misma clave que dimos como pista en el nivel 1
+  const paisCorrecto = "reino_de_loquilandia";
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const selected = document.getElementById("countrySelect").value;
 
-    const clave = document.getElementById("clave").value.trim();
-
-    if (clave === claveCorrecta) {
-      msg.textContent = "✅ ¡Nivel 3 superado! Felicidades, desbloqueaste el final.";
+    if (selected === paisCorrecto) {
+      msg.textContent = "✅ ¡Bienvenido, ciudadano honorable de Loquilandia!";
       msg.style.color = "#0f0";
 
       if (typeof window.guardarProgreso === "function") {
         try {
-          await window.guardarProgreso(4); // podría haber un nivel 4 o final
+          await window.guardarProgreso(4);
         } catch (err) {
-          console.error("❌ Error al guardar el progreso:", err);
+          console.warn("Error al guardar progreso del Nivel 4:", err);
         }
       }
 
-      // Cargar pantalla final o de victoria
       setTimeout(() => {
-        fetch("game/final.html")
+        fetch("game/game.html")
           .then(r => r.text())
           .then(html => {
             const container = document.getElementById("levelContainer");
             container.innerHTML = html;
-            container.className = "final";
-            container.style.display = "flex";
+            container.className = "game";
 
-            // Cargar CSS si existe
-            if (!document.getElementById("css-final")) {
+            if (!document.getElementById("css-game")) {
               const link = document.createElement("link");
               link.rel = "stylesheet";
-              link.href = "game/final.css";
-              link.id = "css-final";
+              link.href = "game/game.css";
+              link.id = "css-game";
               document.head.appendChild(link);
             }
+
+            const prevScript = document.getElementById("js-game");
+            if (prevScript) prevScript.remove();
+
+            const script = document.createElement("script");
+            script.src = "game/game.js";
+            script.id = "js-game";
+            document.body.appendChild(script);
           });
       }, 1500);
-
     } else {
-      msg.textContent = "❌ Clave incorrecta.";
+      msg.textContent = "❌ Ese lugar no existe… o al menos no en tu mente.";
       msg.style.color = "#f00";
     }
   });
 
-  // Botón salir
   if (exitBtn) {
     exitBtn.addEventListener("click", () => {
       if (typeof window.exitLevel === "function") {
@@ -62,4 +64,3 @@ function initLevel3() {
 }
 
 initLevel3();
-
