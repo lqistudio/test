@@ -16,6 +16,11 @@ function initLevel1() {
       msg.textContent = "✅ Acceso concedido. ¡Nivel completado!";
       msg.style.color = "#0f0";
 
+      // 🔐 Guardar progreso del usuario (nivel 2)
+      if (typeof window.guardarProgreso === "function") {
+        window.guardarProgreso(2).catch(console.error);
+      }
+
       // Esperamos y cargamos la pantalla de logro desde game/
       setTimeout(() => {
         fetch("game/game.html")
@@ -60,8 +65,7 @@ function initLevel1() {
       const intro = document.getElementById("introText");
       const container = document.getElementById("levelContainer");
 
-      // Restaurar correctamente el layout del menú
-      intro.style.display = "flex"; // ← usa 'flex' para restaurar el diseño
+      intro.style.display = "flex";
       container.style.display = "none";
       container.innerHTML = "";
       container.className = "";
