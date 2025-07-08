@@ -1,5 +1,22 @@
-<div class="game-screen-container">
+<div class="game-screen-container" style="text-align:center; padding-top: 60px;">
   <h2 id="gameMessage">¡Nivel completado!</h2>
-  <button id="nextLevelBtn">Siguiente Nivel ▶️</button>
-  <button id="exitBtn">Salir al menú</button>
+  <button id="nextLevelBtn" style="margin: 10px; padding: 10px 20px; font-size: 1.1em;">Siguiente Nivel ▶️</button>
+  <button id="exitBtn" style="margin: 10px; padding: 10px 20px; font-size: 1.1em;">Salir al menú</button>
 </div>
+
+<!-- Notificación visual -->
+<div id="notification" style="
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffc107;
+  color: #000;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+  display: none;
+  z-index: 9999;
+  font-weight: bold;
+"></div>
